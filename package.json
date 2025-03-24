@@ -2,7 +2,7 @@
     "name": "lab1-registration-app",
     "version": "1.0.0",
     "dependencies": {
-        "@supabase/supabase-js": "^2.49.1",
+        "@supabase/supabase-js": "^2.49.2",
         "axios": "^1.7.9",
         "dotenv": "^16.4.7",
         "express": "^4.17.1",
