@@ -224,7 +224,30 @@ button:hover {
 
 /* Special styling for logout button - uses red color scheme */
 .logout-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
     background: linear-gradient(135deg, #ff4081, #f50057);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: auto;
+}
+
+/* Hover effect for logout button */
+.logout-btn:hover {
+    background: linear-gradient(135deg, #f50057, #ff4081);
+    transform: scale(1.03);
+}
+
+/* Challenges button placed where logout button was */
+.challenges-btn {
+    background: linear-gradient(135deg, #f06292, #e57373);
     color: white;
     font-size: 1.1rem;
     font-weight: 600;
@@ -237,8 +260,7 @@ button:hover {
     width: 100%;
 }
 
-/* Hover effect for logout button */
-.logout-btn:hover {
-    background: linear-gradient(135deg, #f50057, #ff4081);
+.challenges-btn:hover {
+    background: linear-gradient(135deg, #e57373, #f06292);
     transform: scale(1.03);
 }

@@ -62,6 +62,10 @@ function Dashboard({ name, email, onLogout }) {
         <button className="logout-btn" onClick={onLogout}>
           Log Out
         </button>
+
+        <button className="challenges-btn">
+          Challeges!
+        </button>
       </div>
     </div>
   );
