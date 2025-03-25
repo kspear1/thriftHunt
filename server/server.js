@@ -54,7 +54,19 @@ app.post('/login', async (req, res) => {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
 
-        res.json({ success: true, message: 'Login successful', user: data.user });
+        // Fetch user metadata (including name)
+        const userId = data.user.id;
+        const { data: userDetails, error: userError } = await supabase.auth.admin.getUserById(userId);
+
+        if (userError) throw userError;
+
+        const userName = userDetails.user?.user_metadata?.name || 'User';
+
+        res.json({ 
+            success: true, 
+            message: 'Login successful', 
+            user: { ...data.user, name: userName } 
+        });
     } catch (error) {
         console.error('Login error:', error);
         res.status(401).json({ success: false, message: 'Invalid email or password' });
