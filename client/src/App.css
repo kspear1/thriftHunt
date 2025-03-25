@@ -41,13 +41,14 @@ h2 {
     margin-bottom: 15px;
 }
 
-/* ADDED: h3 heading style for "Hello, [name]!" in dashboard */
-h3 {
+/* ADDED: h3 heading style for "Hello, [name]!" in dashboard 
+.App h3 {
     font-size: 18px;
     font-weight: 600;
-    color: white; /* Bright pink */
+    color: white;  Bright pink 
     margin-bottom: 10px;
 }
+*/
 
 /* Welcome Heading */
 .welcome-heading {

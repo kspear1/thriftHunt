@@ -38,7 +38,7 @@ function Dashboard({ name, email, onLogout }) {
         
         <div className="profile-section">
           <img src="/macaron.jpg" alt="Profile" className="profile-pic" />
-          <button className="edit-profile-btn">Edit Profile</button>
+          <button className="challenges-btn">My Challenges</button>
         </div>
         
         <div className="dashboard-content">
