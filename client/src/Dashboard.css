@@ -1,151 +1,248 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
+/* Base styling */
 body {
-    background-color: #ffe6f2; /* Soft pink background */
+    background: linear-gradient(135deg, #ffcccb, #f8b0d7); /* Soft pink gradient */
     font-family: 'Poppins', sans-serif;
-    color: #5a1a5b;
+    color: #ffffff;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
+/* Main app container */
 .App {
     text-align: center;
-    background: white;
+    background: rgba(255, 255, 255, 0.2);
     padding: 40px;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    max-width: 400px;
 }
 
-h1 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #ff4d94; /* Bright pink */
+/* Welcome Heading */
+.welcome-heading {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #f06292;
     margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* ADDED: h2 heading style for "Verify Your Email" and dashboard headings */
-h2 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #ff4d94; /* Bright pink */
-    margin-bottom: 15px;
+/* Quote */
+.quote {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #f06292;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    padding: 0 20px;
 }
 
-/* ADDED: h3 heading style for "Hello, [name]!" in dashboard */
-h3 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #ff4d94; /* Bright pink */
-    margin-bottom: 10px;
-}
-
-/* Form Styling */
-form {
+/* Authentication Tabs Styling */
+.auth-tabs {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 2px solid #e57373;
 }
 
-label {
-    font-size: 14px;
+.tab-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f06292;
+    font-size: 1rem;
     font-weight: 600;
-    margin: 10px 0 5px;
-}
-
-input {
-    width: 90%;
-    padding: 12px;
-    border: 2px solid #ff99c8;
-    border-radius: 10px;
-    font-size: 14px;
-    outline: none;
-    transition: all 0.3s ease-in-out;
-}
-
-input:focus {
-    border-color: #ff4d94;
-    box-shadow: 0 0 8px rgba(255, 77, 148, 0.5);
-}
-
-/* Button Styling */
-button {
-    background: linear-gradient(135deg, #ff66b2, #ff3385);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 12px 20px;
+    padding: 12px 0;
+    margin: 0;
+    width: 50%;
     border: none;
-    border-radius: 20px;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    margin-top: 15px;
-    width: 100%;
+    transition: background 0.3s ease;
 }
 
-button:hover {
-    background: linear-gradient(135deg, #ff3385, #ff66b2);
-    transform: scale(1.05);
+.tab-btn.active {
+    background: linear-gradient(135deg, #e57373, #f06292);
+    color: white;
 }
 
-/* Message Styling */
-.success {
-    color: #00c851;
-    font-weight: bold;
-    margin-top: 15px;
+.tab-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.2);
 }
 
-.error {
-    color: #ff4444;
-    font-weight: bold;
-    margin-top: 15px;
-}
-
-/* ADDED: Generic message class for status messages */
-.message {
-    font-weight: bold;
-    margin-top: 15px;
-}
-
-/* ADDED: Dashboard Styles Section - Begin */
-/* Dashboard container */
+/* Dashboard content */
 .dashboard {
     text-align: center;
 }
 
-/* User greeting section with bottom border */
 .user-greeting {
+    color: white;
     margin-bottom: 20px;
     padding-bottom: 15px;
-    border-bottom: 2px solid #ff99c8;
+    border-bottom: 2px solid #e57373;
 }
 
-/* Styling for the email display in user greeting */
 .user-greeting p {
-    color: #5a1a5b;
-    font-size: 14px;
+    color: #e57373;
+    font-size: 1rem;
 }
 
-/* Main content area of dashboard */
 .dashboard-content {
     min-height: 60px;
     margin-bottom: 20px;
-    font-size: 14px;
-    color: #5a1a5b;
+    font-size: 1rem;
+    color: #e57373;
 }
 
-/* Special styling for logout button - red gradient */
+.dashboard-content p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+/* Logout Button */
 .logout-btn {
-    background: linear-gradient(135deg, #ff4444, #cc0000);
+    background: linear-gradient(135deg, #ff4081, #f50057);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    margin-top: 15px;
+    width: 100%;
 }
 
-/* Hover effect for logout button */
 .logout-btn:hover {
-    background: linear-gradient(135deg, #cc0000, #ff4444);
+    background: linear-gradient(135deg, #f50057, #ff4081);
+    transform: scale(1.03);
 }
-/* ADDED: Dashboard Styles Section - End */
+
+.welcome-popup {
+    background: rgba(255, 255, 255, 0.9);
+    color: #f06292;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    text-align: center;
+    animation: fadeIn 1s ease-out;
+}
+
+.welcome-popup h3 {
+    font-size: 1.5rem;
+}
+
+.welcome-popup button {
+    background: #f06292;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.welcome-popup button:hover {
+    background: #e57373;
+}
+
+/* Profile Section */
+.profile-section {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.edit-profile-btn {
+    background: #f06292;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.edit-profile-btn:hover {
+    background: #e57373;
+}
+
+/* Thrift Tip */
+.thrift-tip {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    color: #f06292;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.thrift-tip h4 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+/* User Stats */
+.user-stats {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    color: #f06292;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.user-stats h4 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.user-stats ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1.1rem;
+    color: #f06292;
+}
+
+.user-stats li {
+    margin-bottom: 8px;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dashboard h2 {
+    color: white;
+  }
