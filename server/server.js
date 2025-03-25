@@ -54,13 +54,8 @@ app.post('/login', async (req, res) => {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
 
-        // Fetch user metadata (including name)
-        const userId = data.user.id;
-        const { data: userDetails, error: userError } = await supabase.auth.admin.getUserById(userId);
-
-        if (userError) throw userError;
-
-        const userName = userDetails.user?.user_metadata?.name || 'User';
+        // Extract name directly from login response
+        const userName = data.user.user_metadata?.name || 'User';
 
         res.json({ 
             success: true, 
