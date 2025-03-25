@@ -5,8 +5,16 @@ import './Dashboard.css';
 function Dashboard({ name, email, onLogout }) {
   const [showPopup, setShowPopup] = useState(true);
   const [thriftTip, setThriftTip] = useState("");
+  const [userName, setUserName] = useState(name || "User");
+
+  
 
   useEffect(() => {
+
+    const storedName = localStorage.getItem("user_name");
+    if (!name && storedName) {
+      setUserName(storedName);
+    }
     // Generate a random thrift tip from an array
     const tips = [
       "Vintage never goes out of style.",
@@ -25,14 +33,14 @@ function Dashboard({ name, email, onLogout }) {
         
         {showPopup && (
           <div className="welcome-popup">
-            <h3>Welcome Back, {name}!</h3>
+            <h3>Welcome Back, {userName}!</h3>
             <p>We missed you! Ready for your next thrift adventure?</p>
             <button onClick={() => setShowPopup(false)}>Yes I am!</button>
           </div>
         )}
         
         <div className="user-greeting">
-          <h3>Hello, {name}!</h3>
+          <h3>Hello, {userName}!</h3>
           <p>You've successfully logged in with: {email}</p>
         </div>
         
