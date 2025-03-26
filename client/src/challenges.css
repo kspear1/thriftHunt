@@ -3,7 +3,7 @@
 /* Base styling */
 body.challenges-body {
     background: linear-gradient(135deg, #ffcccb, #f8b0d7); /* Keep the same gradient */
-    display: block !important; /* Remove the flexbox layout from dashboard.css */
+    display: block; /* Remove the flexbox layout from dashboard.css */
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -11,7 +11,7 @@ body.challenges-body {
 }
 
 /* Full-screen styling for Challenges page */
-.challenges-page {
+/* .challenges-page {
     width: 100%;
     min-height: 100vh;
     display: flex;
@@ -19,8 +19,9 @@ body.challenges-body {
     align-items: center;
     justify-content: flex-start;
     padding: 20px;
-    background-color: #fff; /* Or another background color */
+    background-color: #fff; /* Or another background color
 }
+*/
 
 h1 {
     font-size: 2rem;
