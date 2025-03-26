@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import Dashboard from './Dashboard';
-import Challenges from './Challenges'; // Import the Challenges component
 import './App.css';
 
 function App() {
@@ -25,6 +23,8 @@ function App() {
     // NEW: Added authentication mode state to toggle between register and login
     // This controls which form is displayed to the user
     const [authMode, setAuthMode] = useState('register'); // Options: 'register' or 'login'
+
+    //Challenges Navigation
     
     // ==========================================
     // EVENT HANDLERS
@@ -68,7 +68,7 @@ function App() {
             
             if (response.data.success) {
                 // NEW: Store user name from response if available
-                setName(response.data.name || 'Thrifter'); // Use name from response or default to 'User'
+                setName(response.data.name || 'User'); // Use name from response or default to 'User'
                 setMessage('Login successful!');
                 // Skip verification for login and go straight to dashboard
                 setIsVerified(true); 
@@ -199,46 +199,51 @@ function App() {
     // MAIN RENDER FUNCTION
     // ==========================================
     return (
-        <Router>
-            <div className="App">
-            <Routes>
-    {/* Default route should be the login/signup page */}
-    <Route path="/" element={
-        !isVerified ? (
-            <>
-                <h1>Welcome</h1>
-                {isEmailSent ? (
-                    renderVerificationForm()
-                ) : (
-                    <>
-                        <div className="auth-tabs">
-                            <button 
-                                className={`tab-btn ${authMode === 'register' ? 'active' : ''}`}
-                                onClick={() => setAuthMode('register')}
-                            >
-                                Register
-                            </button>
-                            <button 
-                                className={`tab-btn ${authMode === 'login' ? 'active' : ''}`}
-                                onClick={() => setAuthMode('login')}
-                            >
-                                Login
-                            </button>
-                        </div>
-                        {authMode === 'register' ? renderRegistrationForm() : renderLoginForm()}
-                    </>
-                )}
-            </>
-        ) : (
-            <Dashboard name={name} email={email} onLogout={handleLogout} />
-        )
-    } />
-
-    {/* Challenges route should NOT be the first route */}
-        <Route path="/challenges" element={<Challenges />} />
-    </Routes>
-            </div>
-        </Router>
+        <div className="App">
+            {/* MODIFIED: Conditional rendering now includes more logic */}
+            {!isVerified ? (
+                <>
+                    {/* CHANGED: Heading from "Enter Your Info" to "Welcome" */}
+                    <h1>Welcome</h1>
+                    
+                    {/* Conditional rendering: Show verification form or auth forms */}
+                    {isEmailSent ? (
+                        renderVerificationForm()
+                    ) : (
+                        <>
+                            {/* NEW: Tab navigation for switching between register and login */}
+                            <div className="auth-tabs">
+                                <button 
+                                    className={`tab-btn ${authMode === 'register' ? 'active' : ''}`}
+                                    onClick={() => setAuthMode('register')}
+                                >
+                                    Register
+                                </button>
+                                <button 
+                                    className={`tab-btn ${authMode === 'login' ? 'active' : ''}`}
+                                    onClick={() => setAuthMode('login')}
+                                >
+                                    Login
+                                </button>
+                            </div>
+                            
+                            {/* NEW: Conditionally render either registration or login form */}
+                            {authMode === 'register' ? renderRegistrationForm() : renderLoginForm()}
+                        </>
+                    )}
+                </>
+            ) : (
+                /* Dashboard component remains the same */
+                <Dashboard 
+                    name={name} 
+                    email={email} 
+                    onLogout={handleLogout} 
+                />
+            )}
+            
+            {/* Message display remains the same */}
+            {message && <p className="message">{message}</p>}
+        </div>
     );
 }
 

@@ -5,6 +5,8 @@ import './Dashboard.css';
 function Dashboard({ name, email, onLogout }) {
   const [showPopup, setShowPopup] = useState(true);
   const [thriftTip, setThriftTip] = useState("");
+  const [showChallenges, setShowChallenges] = useState(false);
+
   
   useEffect(() => {
     // Generate a random thrift tip from an array
@@ -18,10 +20,6 @@ function Dashboard({ name, email, onLogout }) {
     setThriftTip(tips[Math.floor(Math.random() * tips.length)]);
   }, []);
 
-  const navigateToChallenges = () => {
-    // Use window.location to navigate to a new URL (challenges page)
-    window.location.href = '/challenges'; // This assumes you have a static page or separate route for challenges
-  };
 
   return (
     <div className="dashboard-container">
@@ -43,7 +41,10 @@ function Dashboard({ name, email, onLogout }) {
         
         <div className="profile-section">
           <img src="/macaron.jpg" alt="Profile" className="profile-pic" />
-          <button className="challenges-btn" onClick={navigateToChallenges}>My Challenges!</button>
+          {/* Toggle Post Listing Form */}
+          <button className="challenges-btn" onClick={() => setShowChallenges(!showChallenges)}>
+                {showForm ? "Cancel" : "Post a Listing"}
+          </button>
         </div>
       
         <div className="thrift-tip">

@@ -172,7 +172,7 @@ body {
     margin-bottom: 10px;
 }
 
-.edit-profile-btn {
+.challenges-btn {
     background: #f06292;
     color: white;
     padding: 8px 20px;
@@ -182,7 +182,7 @@ body {
     transition: background 0.3s ease;
 }
 
-.edit-profile-btn:hover {
+.challenges-btn:hover {
     background: #e57373;
 }
 
