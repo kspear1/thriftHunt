@@ -1,5 +1,6 @@
 // Dashboard.js
 import React, { useState, useEffect } from 'react';
+import Challenges from './Challenges'; // Import Challenges component
 import './Dashboard.css';
 
 function Dashboard({ name, email, onLogout }) {
@@ -45,10 +46,16 @@ function Dashboard({ name, email, onLogout }) {
           <img src="/macaron.jpg" alt="Profile" className="profile-pic" />
           <button className="challenges-btn" onClick={toggleChallenges}>My Challenges!</button>
         </div>
-        
-        <div className="dashboard-content">
-          <p>You're looking awesome today!</p>
-        </div>
+      
+
+        {/* Conditionally render the Challenges Component */}
+        {showChallenges ? (
+          <Challenges />
+        ) : (
+          <div className="dashboard-content">
+            <p>You're looking awesome today!</p>
+          </div>
+        )}
         
         <div className="thrift-tip">
           <h4>Thrift Tip of the Day</h4>
