@@ -47,6 +47,8 @@ function Dashboard({ name, email, onLogout }) {
           <button className="challenges-btn" onClick={() => setShowChallenges(!showChallenges)}>
                 {showChallenges ? "Cancel" : "Post a Listing"}
           </button>
+
+          {showChallenges && <Navigate to="/Challenges" />}
         </div>
       
         <div className="thrift-tip">
