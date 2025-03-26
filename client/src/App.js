@@ -201,96 +201,42 @@ function App() {
     return (
         <Router>
             <div className="App">
-                <Routes>
-                    <Route 
-                        path="/" 
-                        element={
-                            !isVerified ? (
-                                <>
-                                    <h1>Welcome</h1>
-                                    {isEmailSent ? (
-                                        <div>
-                                            <h2>Verify Your Email</h2>
-                                            <label>Enter Verification Code</label>
-                                            <input
-                                                type="text"
-                                                value={verificationCode}
-                                                onChange={(e) => setVerificationCode(e.target.value)}
-                                                required
-                                            />
-                                            <button onClick={handleVerifyEmail}>Verify</button>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <div className="auth-tabs">
-                                                <button 
-                                                    className={`tab-btn ${authMode === 'register' ? 'active' : ''}`}
-                                                    onClick={() => setAuthMode('register')}
-                                                >
-                                                    Register
-                                                </button>
-                                                <button 
-                                                    className={`tab-btn ${authMode === 'login' ? 'active' : ''}`}
-                                                    onClick={() => setAuthMode('login')}
-                                                >
-                                                    Login
-                                                </button>
-                                            </div>
-                                            {authMode === 'register' ? (
-                                                <form onSubmit={handleRegister}>
-                                                    <label>Name</label>
-                                                    <input
-                                                        type="text"
-                                                        value={name}
-                                                        onChange={(e) => setName(e.target.value)}
-                                                        required
-                                                    />
-                                                    <label>Email</label>
-                                                    <input
-                                                        type="email"
-                                                        value={email}
-                                                        onChange={(e) => setEmail(e.target.value)}
-                                                        required
-                                                    />
-                                                    <label>Password</label>
-                                                    <input
-                                                        type="password"
-                                                        value={password}
-                                                        onChange={(e) => setPassword(e.target.value)}
-                                                        required
-                                                    />
-                                                    <button type="submit">Register</button>
-                                                </form>
-                                            ) : (
-                                                <form onSubmit={handleLogin}>
-                                                    <label>Email</label>
-                                                    <input
-                                                        type="email"
-                                                        value={email}
-                                                        onChange={(e) => setEmail(e.target.value)}
-                                                        required
-                                                    />
-                                                    <label>Password</label>
-                                                    <input
-                                                        type="password"
-                                                        value={password}
-                                                        onChange={(e) => setPassword(e.target.value)}
-                                                        required
-                                                    />
-                                                    <button type="submit">Login</button>
-                                                </form>
-                                            )}
-                                        </>
-                                    )}
-                                    {message && <p className="message">{message}</p>}
-                                </>
-                            ) : (
-                                <Dashboard name={name} email={email} onLogout={handleLogout} />
-                            )
-                        } 
-                    />
-                    <Route path="/challenges" element={<Challenges />} />
-                </Routes>
+            <Routes>
+    {/* Default route should be the login/signup page */}
+    <Route path="/" element={
+        !isVerified ? (
+            <>
+                <h1>Welcome</h1>
+                {isEmailSent ? (
+                    renderVerificationForm()
+                ) : (
+                    <>
+                        <div className="auth-tabs">
+                            <button 
+                                className={`tab-btn ${authMode === 'register' ? 'active' : ''}`}
+                                onClick={() => setAuthMode('register')}
+                            >
+                                Register
+                            </button>
+                            <button 
+                                className={`tab-btn ${authMode === 'login' ? 'active' : ''}`}
+                                onClick={() => setAuthMode('login')}
+                            >
+                                Login
+                            </button>
+                        </div>
+                        {authMode === 'register' ? renderRegistrationForm() : renderLoginForm()}
+                    </>
+                )}
+            </>
+        ) : (
+            <Dashboard name={name} email={email} onLogout={handleLogout} />
+        )
+    } />
+
+    {/* Challenges route should NOT be the first route */}
+        <Route path="/challenges" element={<Challenges />} />
+    </Routes>
             </div>
         </Router>
     );
