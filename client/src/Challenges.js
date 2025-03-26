@@ -22,10 +22,6 @@ function Challenges({ onClose, user }) { // Ensure user is passed as a prop
 
     // Handle Image Upload
     const handleImageUpload = async (file, challengeId) => {
-        if (!user?.id) {
-            alert("You must be logged in to upload images.");
-            return;
-        }
 
         const formData = new FormData();
         formData.append('image', file);
