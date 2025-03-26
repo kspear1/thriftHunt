@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 import Challenges from './Challenges';
-import { Navigate } from 'react-router-dom';
 
 
 
@@ -50,7 +49,7 @@ function Dashboard({ name, email, onLogout }) {
           <img src="/macaron.jpg" alt="Profile" className="profile-pic" />
           {/* Open Challenges Page (Replaces Everything) */}
           <button className="challenges-btn" onClick={() => setShowChallenges(true)}>
-            {showChallenges ? "Dashboard!" : "My Challenges!"}          
+            My Challenges!        
           </button>
         </div>
       

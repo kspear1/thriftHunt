@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
+import Dashboard from './Dashboard';
+
 
 function Challenges() {
     const [challenges, setChallenges] = useState([]);
+    const [showDashboard, setShowDashboard] = useState([]);
+
 
     // Sample challenges data - you can replace this with dynamic data from an API if needed
     const allChallenges = [
@@ -23,6 +27,10 @@ function Challenges() {
         setChallenges(getRandomChallenges());
     }, []);
 
+    if (showDashboard) {
+        return <Dashboard onClose={() => setShowDashboard(false)} />;
+    }
+
     return (
         <div className="challenges-page">
             <h1>Thrift Challenges</h1>
@@ -34,6 +42,12 @@ function Challenges() {
                         <div className="points">Points: {challenge.points}</div>
                     </div>
                 ))}
+            </div>
+            <div>
+                {/* Open Dashboard Page (Replaces Everything) */}
+                <button className="dashboard-btn" onClick={() => setShowDashboard(true)}>
+                    Dashboard!      
+                </button>
             </div>
         </div>
     );
