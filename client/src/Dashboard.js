@@ -1,13 +1,11 @@
 // Dashboard.js
 import React, { useState, useEffect } from 'react';
-import Challenges from './Challenges'; // Import Challenges component
 import './Dashboard.css';
 
 function Dashboard({ name, email, onLogout }) {
   const [showPopup, setShowPopup] = useState(true);
   const [thriftTip, setThriftTip] = useState("");
-  const [showChallenges, setShowChallenges] = useState(false);
-
+  
   useEffect(() => {
     // Generate a random thrift tip from an array
     const tips = [
@@ -20,8 +18,9 @@ function Dashboard({ name, email, onLogout }) {
     setThriftTip(tips[Math.floor(Math.random() * tips.length)]);
   }, []);
 
-  const toggleChallenges = () => {
-    setShowChallenges(!showChallenges); // Toggle visibility of the challenges section
+  const navigateToChallenges = () => {
+    // Use window.location to navigate to a new URL (challenges page)
+    window.location.href = '/challenges'; // This assumes you have a static page or separate route for challenges
   };
 
   return (
@@ -44,19 +43,9 @@ function Dashboard({ name, email, onLogout }) {
         
         <div className="profile-section">
           <img src="/macaron.jpg" alt="Profile" className="profile-pic" />
-          <button className="challenges-btn" onClick={toggleChallenges}>My Challenges!</button>
+          <button className="challenges-btn" onClick={navigateToChallenges}>My Challenges!</button>
         </div>
       
-
-        {/* Conditionally render the Challenges Component */}
-        {showChallenges ? (
-          <Challenges />
-        ) : (
-          <div className="dashboard-content">
-            <p>You're looking awesome today!</p>
-          </div>
-        )}
-        
         <div className="thrift-tip">
           <h4>Thrift Tip of the Day</h4>
           <p>{thriftTip}</p>
