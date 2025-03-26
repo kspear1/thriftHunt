@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
 
-function Challenges() {
+function Challenges({ onClose }) {
     const [challenges, setChallenges] = useState([]);
 
     // Sample challenges data - you can replace this with dynamic data from an API if needed
@@ -35,6 +35,9 @@ function Challenges() {
                     </div>
                 ))}
             </div>
+            <button className="dashboard-btn" onClick={onClose}>
+                Dashboard!
+            </button>
         </div>
     );
 }
