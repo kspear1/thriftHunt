@@ -5,7 +5,6 @@ import './Dashboard.css';
 function Dashboard({ name, email, onLogout }) {
   const [showPopup, setShowPopup] = useState(true);
   const [thriftTip, setThriftTip] = useState("");
-  
 
   useEffect(() => {
     // Generate a random thrift tip from an array
@@ -26,7 +25,7 @@ function Dashboard({ name, email, onLogout }) {
         
         {showPopup && (
           <div className="welcome-popup">
-            <h3>Welcome Back, {userName}!</h3>
+            <h3>Welcome Back, {name}!</h3>
             <p>We missed you! Ready for your next thrift adventure?</p>
             <button onClick={() => setShowPopup(false)}>Yes I am!</button>
           </div>
