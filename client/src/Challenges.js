@@ -3,6 +3,7 @@ import './challenges.css';
 
 function Challenges({ onClose }) {
     const [challenges, setChallenges] = useState([]);
+    const [imagePreviews, setImagePreviews] = useState({}); // Store image previews for each challenge
 
     // Sample challenges data - you can replace this with dynamic data from an API if needed
     const allChallenges = [
@@ -19,6 +20,21 @@ function Challenges({ onClose }) {
         return shuffled.slice(0, 3);
     };
 
+    // Handle image file change and generate preview
+    const handleImageChange = (event, challengeIndex) => {
+        const file = event.target.files[0];
+        if (file) {
+            const previewUrl = URL.createObjectURL(file);
+            setImagePreviews(prev => ({
+                ...prev,
+                [challengeIndex]: previewUrl
+            }));
+
+            // Optionally, you can upload the image to a server here
+            // Example: uploadImageToServer(file);
+        }
+    };
+
     useEffect(() => {
         setChallenges(getRandomChallenges());
         document.body.classList.add("challenges-body");
@@ -33,11 +49,30 @@ function Challenges({ onClose }) {
             <div className="challenges-container">
                 {challenges.map((challenge, index) => (
                     <div key={index} className="challenge-box">
-                        <h2>{challenge.title}</h2>
-                        <p>{challenge.description}</p>
-                        <div className="points">Points: {challenge.points}</div>
+                    <h2>{challenge.title}</h2>
+                    <p>{challenge.description}</p>
+                    <div className="points">Points: {challenge.points}</div>
+
+                    {/* Image Upload */}
+                    <div className="upload-container">
+                        <h3>Upload Your Image</h3>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(event) => handleImageChange(event, index)} // Handle the file input change
+                        />
+                        
+                        {/* Image Preview */}
+                        {imagePreviews[index] && (
+                            <div className="image-preview">
+                                <img src={imagePreviews[index]} alt={`Preview of ${challenge.title}`} />
+                            </div>
+                        )}
                     </div>
+                </div>
                 ))}
+
+
             </div>
             <button className="dashboard-btn" onClick={onClose}>
                 Dashboard!
