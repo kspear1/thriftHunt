@@ -1,6 +1,8 @@
 // Dashboard.js
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
+import Challenges from './Challenges';
+
 
 function Dashboard({ name, email, onLogout }) {
   const [showPopup, setShowPopup] = useState(true);
@@ -43,7 +45,7 @@ function Dashboard({ name, email, onLogout }) {
           <img src="/macaron.jpg" alt="Profile" className="profile-pic" />
           {/* Toggle Post Listing Form */}
           <button className="challenges-btn" onClick={() => setShowChallenges(!showChallenges)}>
-                {showForm ? "Cancel" : "Post a Listing"}
+                {showChallenges ? "Cancel" : "Post a Listing"}
           </button>
         </div>
       
