@@ -49,12 +49,9 @@ function Dashboard({ name, email, onLogout }) {
         <div className="profile-section">
           <img src="/macaron.jpg" alt="Profile" className="profile-pic" />
           {/* Open Challenges Page (Replaces Everything) */}
-          <button 
-                    className="challenges-btn" 
-                    onClick={() => setShowChallenges(true)}
-                >
-                    Go to Challenges
-                </button>
+          <button className="challenges-btn" onClick={() => setShowChallenges(true)}>
+            {showForm ? "Dashboard!" : "My Challenges!"}          
+          </button>
         </div>
       
         <div className="thrift-tip">
