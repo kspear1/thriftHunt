@@ -50,7 +50,7 @@ function Dashboard({ name, email, onLogout }) {
           <img src="/macaron.jpg" alt="Profile" className="profile-pic" />
           {/* Open Challenges Page (Replaces Everything) */}
           <button className="challenges-btn" onClick={() => setShowChallenges(true)}>
-            {showForm ? "Dashboard!" : "My Challenges!"}          
+            {showChallenges ? "Dashboard!" : "My Challenges!"}          
           </button>
         </div>
       
