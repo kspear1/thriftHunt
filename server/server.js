@@ -1,6 +1,7 @@
 // Import required modules
 const express = require('express');
 const path = require('path');
+const multer = require('multer'); // Middleware for handling multipart/form-data
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
@@ -9,6 +10,10 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SER
 
 const app = express();
 app.use(express.json());
+
+// Configure Multer for handling image uploads
+const storage = multer.memoryStorage(); // Store file in memory as a buffer
+const upload = multer({ storage });
 
 // Serve static files from React build folder
 app.use(express.static(path.join(__dirname, '../client/build')));
@@ -55,7 +60,7 @@ app.post('/login', async (req, res) => {
         if (error) throw error;
 
         // Extract name directly from login response
-        const userName = data.user.user_metadata?.name || 'User';
+        const userName = data.user.user_metadata?.name || 'Thrifter';
 
         res.json({ 
             success: true, 
@@ -89,6 +94,74 @@ app.post('/verify', async (req, res) => {
     } catch (error) {
         console.error('Verification error:', error);
         res.status(500).json({ success: false, message: 'Error verifying email' });
+    }
+});
+
+// ========================================================
+// Image Upload Route (to Supabase Storage)
+// ========================================================
+app.post('/upload-challenge-image', upload.single('image'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: 'No file uploaded' });
+        }
+
+        const { userId, challengeId } = req.body; // Get user & challenge ID from frontend
+        if (!userId || !challengeId) {
+            return res.status(400).json({ success: false, message: 'Missing userId or challengeId' });
+        }
+
+        // Create a unique filename
+        const fileName = `challenges/${userId}_${challengeId}_${Date.now()}.jpg`;
+        const contentType = req.file.mimetype;
+
+        // Upload to Supabase Storage
+        const { data, error } = await supabase.storage
+            .from('challenge-images') // Supabase bucket name
+            .upload(fileName, req.file.buffer, {
+                contentType,
+                upsert: false,
+            });
+
+        if (error) throw error;
+
+        // Get the public URL of the uploaded image
+        const { data: publicUrlData } = supabase.storage.from('challenge-images').getPublicUrl(fileName);
+        const imageUrl = publicUrlData.publicUrl;
+
+        // Store image URL in database (optional)
+        const { error: dbError } = await supabase
+            .from('challenge_submissions')
+            .insert([{ user_id: userId, challenge_id: challengeId, image_url: imageUrl, status: 'pending' }]);
+
+        if (dbError) throw dbError;
+
+        res.json({ success: true, message: 'Image uploaded successfully', imageUrl });
+    } catch (error) {
+        console.error('Upload error:', error);
+        res.status(500).json({ success: false, message: 'Image upload failed', error: error.message });
+    }
+});
+
+app.post('/review-challenge-submission', async (req, res) => {
+    const { submissionId, status } = req.body; // "approved" or "rejected"
+
+    if (!submissionId || !['approved', 'rejected'].includes(status)) {
+        return res.status(400).json({ success: false, message: 'Invalid request' });
+    }
+
+    try {
+        const { error } = await supabase
+            .from('challenge_submissions')
+            .update({ status })
+            .eq('id', submissionId);
+
+        if (error) throw error;
+
+        res.json({ success: true, message: `Submission ${status} successfully` });
+    } catch (error) {
+        console.error('Review error:', error);
+        res.status(500).json({ success: false, message: 'Review failed', error: error.message });
     }
 });
 
