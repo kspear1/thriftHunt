@@ -50,7 +50,8 @@ function Dashboard({ name, email, onLogout }) {
                 {showChallenges ? "Back" : "My Challenges!"}
           </button>
 
-          {showChallenges && <Navigate to="/Challenges" />}
+          {/* Show Challenges if `showChallenges` is true */}
+          {showChallenges && <Challenges />}
         </div>
       
         <div className="thrift-tip">
