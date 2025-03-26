@@ -24,6 +24,9 @@ function Dashboard({ name, email, onLogout }) {
     setThriftTip(tips[Math.floor(Math.random() * tips.length)]);
   }, []);
 
+  if (showChallenges) {
+    return <Challenges onClose={() => setShowChallenges(false)} />;
+}
 
   return (
     <div className="dashboard-container">
@@ -45,13 +48,13 @@ function Dashboard({ name, email, onLogout }) {
         
         <div className="profile-section">
           <img src="/macaron.jpg" alt="Profile" className="profile-pic" />
-          {/* Toggle Post Listing Form */}
-          <button className="challenges-btn" onClick={() => setShowChallenges(!showChallenges)}>
-                {showChallenges ? "Back" : "My Challenges!"}
-          </button>
-
-          {/* Show Challenges if `showChallenges` is true */}
-          {showChallenges && <Challenges />}
+          {/* Open Challenges Page (Replaces Everything) */}
+          <button 
+                    className="challenges-btn" 
+                    onClick={() => setShowChallenges(true)}
+                >
+                    Go to Challenges
+                </button>
         </div>
       
         <div className="thrift-tip">
