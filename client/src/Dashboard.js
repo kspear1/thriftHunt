@@ -1,8 +1,6 @@
 // Dashboard.js
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
-import challenges from './challenges';
-const [showChallenges, setShowChallenges] = useState(false);
 
 function Dashboard({ name, email, onLogout }) {
   const [showPopup, setShowPopup] = useState(true);
@@ -66,9 +64,9 @@ function Dashboard({ name, email, onLogout }) {
           Log Out
         </button>
 
-        <button className="challenges-btn" onClick={() => setShowChallenges(!showChallenges)}>
-                {showChallenges ? "Hide Challenges" : "View Challenges"}
-            </button>
+        <button className="challenges-btn">
+          Challeges!
+        </button>
       </div>
     </div>
   );
