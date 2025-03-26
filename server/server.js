@@ -38,12 +38,6 @@ app.post('/register', async (req, res) => {
 
         if (error) throw error;
 
-        const { error: insertError } = await supabase
-            .from('users')
-            .insert([{ user_id: data.user.id, name }]);
-
-        if (insertError) throw insertError;
-
         res.json({ success: true, message: 'Registration successful. Check your email for verification.' });
     } catch (error) {
         console.error('Registration error:', error);
