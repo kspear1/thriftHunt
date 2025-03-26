@@ -25,7 +25,7 @@ body.challenges-body {
 h1 {
     font-size: 2rem;
     margin-bottom: 20px;
-    color: #333;
+    color: #f06292;
 }
 
 .challenges-container {
@@ -41,7 +41,7 @@ h1 {
     padding: 20px;
     width: 300px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px #f06292;
     text-align: center;
     border: 1px solid #ddd;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -49,7 +49,7 @@ h1 {
 
 .challenge-box:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 15px #f06292;
 }
 
 .challenge-box h2 {
@@ -67,7 +67,7 @@ h1 {
 .points {
     font-weight: bold;
     font-size: 1.2rem;
-    color: #ff6347; /* Make points stand out */
+    color: #f06292; /* Make points stand out */
 }
 
 /* Dashboard button styling */
