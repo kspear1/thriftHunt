@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
 
-import React, { useState, useEffect } from 'react';
-import './Challenges.css'; // Assuming you will add the styles here
-
 function Challenges() {
     const [challenges, setChallenges] = useState([]);
 
