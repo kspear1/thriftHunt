@@ -53,14 +53,23 @@ function Challenges({ onClose }) {
                     <p>{challenge.description}</p>
                     <div className="points">Points: {challenge.points}</div>
 
-                    {/* Image Upload */}
+                    {/* Custom Image Upload */}
                     <div className="upload-container">
-                        <h3>Upload Your Image</h3>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(event) => handleImageChange(event, index)} // Handle the file input change
-                        />
+                            <h3>Upload Your Image</h3>
+                            
+                            {/* Hidden file input */}
+                            <input
+                                type="file"
+                                accept="image/*"
+                                id={`fileInput-${index}`}
+                                className="hidden-file-input"
+                                onChange={(event) => handleImageChange(event, index)}
+                            />
+
+                            {/* Custom Upload Button */}
+                            <button className="upload-button" onClick={() => document.getElementById(`fileInput-${index}`).click()}>
+                                Upload Photo
+                            </button>
                         
                         {/* Image Preview */}
                         {imagePreviews[index] && (
