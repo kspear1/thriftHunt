@@ -21,6 +21,10 @@ function Challenges({ onClose }) {
 
     useEffect(() => {
         setChallenges(getRandomChallenges());
+        document.body.classList.add("challenges-body");
+        return () => {
+            document.body.classList.remove("challenges-body"); // Cleanup on exit
+        };
     }, []);
 
     return (

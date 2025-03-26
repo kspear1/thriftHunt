@@ -1,17 +1,25 @@
 /* Challenges.css */
 
-body, html {
+/* Base styling */
+body.challenges-body {
+    background: linear-gradient(135deg, #ffcccb, #f8b0d7); /* Keep the same gradient */
+    display: block; /* Remove the flexbox layout from dashboard.css */
+    min-height: 100vh;
     margin: 0;
     padding: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #f9f9f9 !important; /* Forces override */
+    width: 100%;
 }
 
+/* Full-screen styling for Challenges page */
 .challenges-page {
-    text-align: center;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     padding: 20px;
-    background-color: #f9f9f9; /* Match the Subscription page */
+    background-color: #fff; /* Or another background color */
 }
 
 h1 {
