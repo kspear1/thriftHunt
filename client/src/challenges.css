@@ -2,7 +2,7 @@
 
 /* Base styling */
 body.challenges-body {
-    background: linear-gradient(135deg, #ffcccb, #f8b0d7); /* Keep the same gradient */
+    background: linear-gradient(135deg, #f8b0d7, #ffcccb); /* Keep the same gradient */
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -49,7 +49,7 @@ h1 {
 
 .challenge-box:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 15px #f06292;
+    box-shadow: 0 6px 15px #f50057;
 }
 
 .challenge-box h2 {
