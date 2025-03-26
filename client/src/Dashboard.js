@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 import Challenges from './Challenges';
+import { Navigate } from 'react-router-dom';
+
 
 
 function Dashboard({ name, email, onLogout }) {
@@ -45,7 +47,7 @@ function Dashboard({ name, email, onLogout }) {
           <img src="/macaron.jpg" alt="Profile" className="profile-pic" />
           {/* Toggle Post Listing Form */}
           <button className="challenges-btn" onClick={() => setShowChallenges(!showChallenges)}>
-                {showChallenges ? "Cancel" : "Post a Listing"}
+                {showChallenges ? "Back" : "My Challenges!"}
           </button>
 
           {showChallenges && <Navigate to="/Challenges" />}
