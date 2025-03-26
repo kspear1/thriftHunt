@@ -3,7 +3,7 @@
 /* Base styling */
 body.challenges-body {
     background: linear-gradient(135deg, #ffcccb, #f8b0d7); /* Keep the same gradient */
-    display: block; /* Remove the flexbox layout from dashboard.css */
+    display: block !important; /* Remove the flexbox layout from dashboard.css */
     min-height: 100vh;
     margin: 0;
     padding: 0;
