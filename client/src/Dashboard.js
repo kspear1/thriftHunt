@@ -5,6 +5,7 @@ import './Dashboard.css';
 function Dashboard({ name, email, onLogout }) {
   const [showPopup, setShowPopup] = useState(true);
   const [thriftTip, setThriftTip] = useState("");
+  const [showChallenges, setShowChallenges] = useState(false);
 
   useEffect(() => {
     // Generate a random thrift tip from an array
@@ -17,6 +18,10 @@ function Dashboard({ name, email, onLogout }) {
     ];
     setThriftTip(tips[Math.floor(Math.random() * tips.length)]);
   }, []);
+
+  const toggleChallenges = () => {
+    setShowChallenges(!showChallenges); // Toggle visibility of the challenges section
+  };
 
   return (
     <div className="dashboard-container">
@@ -38,7 +43,7 @@ function Dashboard({ name, email, onLogout }) {
         
         <div className="profile-section">
           <img src="/macaron.jpg" alt="Profile" className="profile-pic" />
-          <button className="challenges-btn">My Challenges</button>
+          <button className="challenges-btn" onClick={toggleChallenges}>My Challenges!</button>
         </div>
         
         <div className="dashboard-content">
@@ -63,9 +68,7 @@ function Dashboard({ name, email, onLogout }) {
           Log Out
         </button>
 
-        <button className="challenges-btn">
-          Challeges!
-        </button>
+  
       </div>
     </div>
   );
