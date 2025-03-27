@@ -67,7 +67,7 @@ function Challenges({ onClose }) {
                                 onChange={(event) => handleImageChange(event, challenge)}
                             />
                             {/* Custom styled label acting as button */}
-                            <label htmlFor={`file-upload-${index}`} className="upload-button">
+                            <label htmlFor={`file-upload-${challenge.id}`} className="upload-button">
                                 Upload Photo
                             </label>
                             
