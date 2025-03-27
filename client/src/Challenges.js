@@ -26,10 +26,15 @@ function Challenges({ onClose, user }) { // Ensure user is passed as a prop
     // Handle Image Upload
     const handleImageUpload = async (file, challengeId) => {
 
+        if (completedChallenges[challengeId]) {
+            alert("You've already earned points for this challenge!");
+            return;
+        }
+
         const formData = new FormData();
         formData.append('image', file);
-        /*formData.append('userId', user.id);
-        formData.append('challengeId', challengeId);*/
+        formData.append('userId', user.id);
+        formData.append('challengeId', challengeId);
     
 
         try {
@@ -51,23 +56,19 @@ function Challenges({ onClose, user }) { // Ensure user is passed as a prop
                 }));
 
                 // Add points if not already added
-                if (!completedChallenges[challengeId]) {
-                    // Update completed challenges with the points added
-                    setCompletedChallenges((prev) => ({
+                const challenge = allChallenges.find(c => c.id === challengeId);
+                if (challenge) {
+                    setUserPoints(prevPoints => prevPoints + challenge.points); //Add points
+                    setCompletedChallenges(prev => ({
                         ...prev,
-                        [challengeId]: true
+                        [challengeId]: true //Mark challenge as completed
                     }));
-
-                    // Add points to the user's total
-                    setUserPoints((prevPoints) => prevPoints + allChallenges.find(c => c.id === challengeId).points);
-                    alert(`You earned ${allChallenges.find(c => c.id === challengeId).points} points for completing this challenge!`);
-                } else {
-                    alert('Points already awarded for this challenge!');
+                    alert(`You earned ${challenge.points} points!`);
                 }
 
-            } else {
-                alert('Upload failed: ' + result.message);
-            }
+                } else {
+                    alert('Upload failed: ' + result.message);
+                }
 
             
         } catch (error) {
