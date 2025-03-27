@@ -4,6 +4,9 @@ import './challenges.css';
 function Challenges({ onClose, user }) { // Ensure user is passed as a prop
     const [challenges, setChallenges] = useState([]);
     const [imagePreviews, setImagePreviews] = useState({}); // Store image previews
+    const [completedChallenges, setCompletedChallenges] = useState(new Set()); // Track completed challenges
+    const [userPoints, setUserPoints] = useState(0); // Track user's total points
+
 
     // Sample challenges data - replace with API data if needed
     const allChallenges = [
@@ -30,10 +33,11 @@ function Challenges({ onClose, user }) { // Ensure user is passed as a prop
     
 
         try {
-            const response = await fetch('/upload-challenge-image', {
+            
+            /*const response = await fetch('/upload-challenge-image', {
                 method: 'POST',
                 body: formData
-            });
+            });*/
 
             const result = await response.json();
             if (result.success) {
@@ -45,9 +49,27 @@ function Challenges({ onClose, user }) { // Ensure user is passed as a prop
                     ...prev,
                     [challengeId]: result.imageUrl
                 }));
+
+                // Add points if not already added
+                if (!completedChallenges[challengeId]) {
+                    // Update completed challenges with the points added
+                    setCompletedChallenges((prev) => ({
+                        ...prev,
+                        [challengeId]: true
+                    }));
+
+                    // Add points to the user's total
+                    setUserPoints((prevPoints) => prevPoints + allChallenges.find(c => c.id === challengeId).points);
+                    alert(`You earned ${allChallenges.find(c => c.id === challengeId).points} points for completing this challenge!`);
+                } else {
+                    alert('Points already awarded for this challenge!');
+                }
+
             } else {
                 alert('Upload failed: ' + result.message);
             }
+
+            
         } catch (error) {
             console.error('Upload error:', error);
             alert('Error uploading image');
@@ -84,6 +106,10 @@ function Challenges({ onClose, user }) { // Ensure user is passed as a prop
     return (
         <div className="challenges-page">
             <h1>Thrift Challenges</h1>
+            {/* Display user's total points */}
+            <div className="user-points">
+                <h3>Total Points: {userPoints}</h3>
+            </div>
             <div className="challenges-container">
                 {challenges.map((challenge) => (
                     <div key={challenge.id} className="challenge-box">
