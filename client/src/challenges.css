@@ -137,3 +137,31 @@ h1 {
     margin-left: auto;
     margin-right: auto;
 }
+
+.points-display {
+    font-size: 2rem; /* Increase font size for prominence */
+    font-weight: bold; /* Make the text bold */
+    color: #fff; /* White color for contrast */
+    background-color: #ff69b4; /* Soft pink background (adjust as needed) */
+    padding: 15px 30px; /* Add padding for a more spacious look */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    margin: 20px 0; /* Add margin to separate it from other elements */
+    text-align: center; /* Center the text */
+    width: auto;
+    max-width: 300px; /* Limit the width to prevent it from stretching too far */
+    margin: 20px auto; /* Center it horizontally */
+    font-family: 'Arial', sans-serif; /* Clean font */
+    letter-spacing: 1px; /* Add some space between letters */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for effects */
+}
+
+.points-display:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+}
+
+.points-display .total {
+    font-size: 1.5rem; /* Smaller font for the points number */
+    font-weight: normal; /* Lighter weight for the points */
+}
