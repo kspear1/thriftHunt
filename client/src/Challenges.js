@@ -28,14 +28,10 @@ function Challenges({ onClose }) {
         const file = event.target.files[0];
         if (file && !completedChallenges.has(challenge.id)) {
             const previewUrl = URL.createObjectURL(file);
-            setImagePreviews(prev => ({
-                ...prev,
-                [challenge.id]: previewUrl
-            }));
-    
-            // Ensure points are added correctly
-            setEarnedPoints(prevPoints => (prevPoints || 0) + (challenge.points || 0));
-    
+            setImagePreviews(prev => ({ ...prev, [challenge.id]: previewUrl }));
+            
+            // Add points only if challenge hasn't been completed
+            setEarnedPoints(prevPoints => prevPoints + challenge.points);
             setCompletedChallenges(prev => new Set(prev).add(challenge.id));
         }
     };
@@ -65,10 +61,10 @@ function Challenges({ onClose }) {
                             {/* Hidden file input */}
                             <input
                                 type="file"
-                                id={`file-upload-${index}`}
+                                id={`file-upload-${challenge.id}`}
                                 style={{ display: 'none' }}
                                 accept="image/*"
-                                onChange={(event) => handleImageChange(event, index)}
+                                onChange={(event) => handleImageChange(event, challenge)}
                             />
                             {/* Custom styled label acting as button */}
                             <label htmlFor={`file-upload-${index}`} className="upload-button">
@@ -76,9 +72,9 @@ function Challenges({ onClose }) {
                             </label>
                             
                             {/* Image Preview */}
-                            {imagePreviews[index] && (
+                            {imagePreviews[challenge.id] && (
                                 <div className="image-preview">
-                                    <img src={imagePreviews[index]} alt={`Preview of ${challenge.title}`} />
+                                    <img src={imagePreviews[challenge.id]} alt={`Preview of ${challenge.title}`} />
                                 </div>
                             )}
                         </div>
