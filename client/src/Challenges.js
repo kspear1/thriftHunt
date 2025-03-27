@@ -28,8 +28,8 @@ function Challenges({ onClose, user }) { // Ensure user is passed as a prop
 
         const formData = new FormData();
         formData.append('image', file);
-        formData.append('userId', user.id);
-        formData.append('challengeId', challengeId);
+        /*formData.append('userId', user.id);
+        formData.append('challengeId', challengeId);*/
     
 
         try {
