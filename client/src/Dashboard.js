@@ -34,7 +34,7 @@ function Dashboard({ name, email, onLogout }) {
       "In 2013, a man found a rare Rolex watch at a secondhand shop in New York for $5,000—it was worth $250,000! ⌚️💥",
       "Thrifted designer jeans like Levi’s or Wranglers can sell for hundreds of dollars online—especially if they’re vintage and distressed! 👖💸"
     ];
-    setThriftFact(tips[Math.floor(Math.random() * tips.length)]);
+    setThriftFact(facts[Math.floor(Math.random() * tips.length)]);
   }, []);
 
   if (showChallenges) {
