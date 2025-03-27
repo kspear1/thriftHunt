@@ -143,54 +143,27 @@ h1 {
     font-weight: bold;
     color: #fff;
     background-color: #ff69b4; /* Soft pink background */
-    padding: 15px 25px; /* Reduced padding for smaller size */
-    border-radius: 50%; /* Make it round, but with heart shape */
-    position: relative;
-    width: 150px; /* Adjusted width */
-    height: 150px; /* Adjusted height */
+    padding: 15px 25px; /* Adjusted padding */
+    border-radius: 50%; /* Full circle */
+    width: 120px; /* Adjusted width for a smaller circle */
+    height: 120px; /* Adjusted height for a smaller circle */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow */
     margin: 20px auto;
     font-family: 'Arial', sans-serif;
     letter-spacing: 1px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.points-display::before,
-.points-display::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 100px;
-    height: 100px;
-    background-color: #ff69b4;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-.points-display::before {
-    left: 50px;
-    transform: rotate(-45deg);
-}
-
-.points-display::after {
-    right: 50px;
-    transform: rotate(45deg);
-}
-
 .points-display:hover {
     transform: scale(1.05); /* Slightly enlarge on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
 }
 
 .points-display .total {
     font-size: 1.2rem; /* Smaller font for the points number */
-    font-weight: normal; /* Lighter weight for the points */
-}
-
-.points-display span {
-    display: block;
+    font-weight: normal; /* Normal weight for the points */
 }
