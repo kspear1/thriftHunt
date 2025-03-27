@@ -52,16 +52,27 @@ function Challenges({ onClose }) {
         setChallenges(getRandomChallenges());
         document.body.classList.add("challenges-body");
 
-        // Load points and completed challenges from localStorage if available
-        const savedPoints = localStorage.getItem('earnedPoints');
-        const savedCompletedChallenges = JSON.parse(localStorage.getItem('completedChallenges'));
+        // Get the user identifier (this could be their email or user ID from registration)
+        const userId = localStorage.getItem('userId');
+        
+        // If there's no userId (new user), clear localStorage to reset points and challenges
+        if (!userId) {
+            // Clear previous session data if the user is new
+            localStorage.setItem('userId', 'new-user'); // Set a new user ID for this session
+            localStorage.setItem('earnedPoints', 0); // Reset points to 0
+            localStorage.setItem('completedChallenges', JSON.stringify([])); // Reset challenges
+        } else {
+            // If the user already has an ID, load their saved data
+            const savedPoints = localStorage.getItem('earnedPoints');
+            const savedCompletedChallenges = JSON.parse(localStorage.getItem('completedChallenges'));
 
-        if (savedPoints) {
-            setEarnedPoints(parseInt(savedPoints, 10));
-        }
+            if (savedPoints) {
+                setEarnedPoints(parseInt(savedPoints, 10));
+            }
 
-        if (savedCompletedChallenges) {
-            setCompletedChallenges(new Set(savedCompletedChallenges));
+            if (savedCompletedChallenges) {
+                setCompletedChallenges(new Set(savedCompletedChallenges));
+            }
         }
 
         return () => {
