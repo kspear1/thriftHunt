@@ -115,7 +115,7 @@ h1 {
     display: block;
     margin: 10px auto; /* Centers the button */
     padding: 10px 20px;
-    background-color: #ff3385; /* Soft pink color */
+    background-color: #f50057; /* Soft pink color */
     color: white;
     border: none;
     border-radius: 8px;
@@ -125,7 +125,7 @@ h1 {
 }
 
 .upload-button:hover {
-    background-color: #ff66b2; /* Slightly darker pink */
+    background-color: #f06292; /* Slightly darker pink */
 }
 
 .image-preview img {
@@ -142,7 +142,7 @@ h1 {
     font-size: 1.5rem; /* Adjusted font size */
     font-weight: bold;
     color: #fff;
-    background-color: #ff69b4; /* Soft pink background */
+    background-color: #f06292; /* Soft pink background */
     padding: 15px 25px; /* Adjusted padding */
     border-radius: 50%; /* Full circle */
     width: 120px; /* Adjusted width for a smaller circle */
