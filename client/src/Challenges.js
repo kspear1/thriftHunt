@@ -56,7 +56,9 @@ function Challenges({ onClose, user }) { // Ensure user is passed as a prop
                 }));
 
                 // Add points if not already added
+                console.log("challengeId received:", challengeId);
                 const challenge = allChallenges.find(c => c.id === challengeId);
+                console.log("Found challenge:", challenge);
                 if (challenge) {
                     setUserPoints(prevPoints => prevPoints + challenge.points); //Add points
                     setCompletedChallenges(prev => ({
