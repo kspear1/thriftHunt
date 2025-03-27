@@ -24,7 +24,7 @@ function Dashboard({ name, email, onLogout }) {
   }, []);
 
   if (showChallenges) {
-    return <Challenges onClose={() => setShowChallenges(false)} />;
+    return <Challenges user = {user} onClose={() => setShowChallenges(false)} />;
 }
 
   return (
