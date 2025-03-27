@@ -24,7 +24,7 @@ function Challenges({ onClose }) {
     };
 
     // Handle image file change and generate preview
-    const handleImageChange = (event, challengeIndex) => {
+    const handleImageChange = (event, challenge) => {
         const file = event.target.files[0];
         if (file && !completedChallenges.has(challenge.id)) {
             const previewUrl = URL.createObjectURL(file);
