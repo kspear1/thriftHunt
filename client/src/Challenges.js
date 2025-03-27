@@ -54,11 +54,18 @@ function Challenges({ onClose }) {
                         {/* Image Upload */}
                         <div className="upload-container">
                             <h3>Upload Your Image</h3>
+                            {/* Hidden file input */}
                             <input
                                 type="file"
+                                id={`file-upload-${index}`}
+                                style={{ display: 'none' }}
                                 accept="image/*"
-                                onChange={(event) => handleImageChange(event, index)} // Handle the file input change
+                                onChange={(event) => handleImageChange(event, index)}
                             />
+                            {/* Custom styled label acting as button */}
+                            <label htmlFor={`file-upload-${index}`} className="upload-button">
+                                Upload Photo
+                            </label>
                             
                             {/* Image Preview */}
                             {imagePreviews[index] && (
