@@ -28,10 +28,14 @@ function Challenges({ onClose }) {
         const file = event.target.files[0];
         if (file && !completedChallenges.has(challenge.id)) {
             const previewUrl = URL.createObjectURL(file);
-            setImagePreviews(prev => ({ ...prev, [challenge.id]: previewUrl }));
-            
-            // Add points only if challenge hasn't been completed
-            setEarnedPoints(prevPoints => prevPoints + challenge.points);
+            setImagePreviews(prev => ({
+                ...prev,
+                [challenge.id]: previewUrl
+            }));
+    
+            // Ensure points are added correctly
+            setEarnedPoints(prevPoints => (prevPoints || 0) + (challenge.points || 0));
+    
             setCompletedChallenges(prev => new Set(prev).add(challenge.id));
         }
     };
