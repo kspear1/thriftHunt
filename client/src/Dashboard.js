@@ -1,6 +1,5 @@
 // Dashboard.js
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@supabase/supabase-js';
 import './Dashboard.css';
 import Challenges from './Challenges';
 
