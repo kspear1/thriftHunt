@@ -30,13 +30,21 @@ function Challenges({ onClose }) {
             const previewUrl = URL.createObjectURL(file);
             setImagePreviews(prev => ({ ...prev, [challenge.id]: previewUrl }));
             
-            // Add points only if challenge hasn't been completed
-            setEarnedPoints(prevPoints => prevPoints + challenge.points);
-            setCompletedChallenges(prev => new Set(prev).add(challenge.id));
+            setEarnedPoints(prevPoints => {
+                const updatedPoints = prevPoints + challenge.points;
+                
+                // Save the updated points to localStorage
+                localStorage.setItem('earnedPoints', updatedPoints);
 
-            // Save the updated points to localStorage
-            localStorage.setItem('earnedPoints', newPoints);
-            localStorage.setItem('completedChallenges', JSON.stringify(Array.from(completedChallenges)));
+                // Save the completed challenges to localStorage
+                setCompletedChallenges(prev => {
+                    const updatedChallenges = new Set(prev).add(challenge.id);
+                    localStorage.setItem('completedChallenges', JSON.stringify(Array.from(updatedChallenges)));
+                    return updatedChallenges;
+                });
+
+                return updatedPoints;
+            });
         }
     };
 
@@ -44,6 +52,7 @@ function Challenges({ onClose }) {
         setChallenges(getRandomChallenges());
         document.body.classList.add("challenges-body");
 
+        // Load points and completed challenges from localStorage if available
         // Load points and completed challenges from localStorage if available
         const savedPoints = localStorage.getItem('earnedPoints');
         const savedCompletedChallenges = JSON.parse(localStorage.getItem('completedChallenges'));
@@ -55,11 +64,25 @@ function Challenges({ onClose }) {
         if (savedCompletedChallenges) {
             setCompletedChallenges(new Set(savedCompletedChallenges));
         }
-        
+
         return () => {
             document.body.classList.remove("challenges-body"); // Cleanup on exit
         };
     }, []);
+
+    // Ensure points and challenges are loaded even if navigating away and back
+    useEffect(() => {
+        const savedPoints = localStorage.getItem('earnedPoints');
+        const savedCompletedChallenges = JSON.parse(localStorage.getItem('completedChallenges'));
+
+        if (savedPoints) {
+            setEarnedPoints(parseInt(savedPoints, 10));
+        }
+
+        if (savedCompletedChallenges) {
+            setCompletedChallenges(new Set(savedCompletedChallenges));
+        }
+    }, []);  // This ensures loading the state again when user returns to the page
 
     return (
         <div className="challenges-page">
