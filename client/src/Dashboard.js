@@ -22,16 +22,6 @@ function Dashboard({ name, email, onLogout }) {
       "You’re saving money and the planet with each find!"
     ];
     setThriftTip(tips[Math.floor(Math.random() * tips.length)]);
-
-    const getUser = async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (data?.user) {
-          setUser(data.user); // Store user in state
-      } else {
-          console.error("User not found", error);
-      }
-    };
-    getUser();
   }, []);
 
   if (showChallenges) {

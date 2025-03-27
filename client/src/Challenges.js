@@ -88,6 +88,7 @@ function Challenges({ onClose }) {
         <div className="challenges-page">
             <h1>Thrift Challenges</h1>
             <div className="points-display">Total Points: {earnedPoints}</div>
+            <hr className="divider" />
             <div className="challenges-container">
                 {challenges.map((challenge, index) => (
                     <div key={index} className="challenge-box">
