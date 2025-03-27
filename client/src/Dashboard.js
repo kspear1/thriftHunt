@@ -8,9 +8,8 @@ import Challenges from './Challenges';
 function Dashboard({ name, email, onLogout }) {
   const [showPopup, setShowPopup] = useState(true);
   const [thriftTip, setThriftTip] = useState("");
+  const [thriftFact, setThriftFact] = useState("");
   const [showChallenges, setShowChallenges] = useState(false);
-  const [user, setUser] = useState(null);
-
   
   useEffect(() => {
     // Generate a random thrift tip from an array
@@ -22,6 +21,20 @@ function Dashboard({ name, email, onLogout }) {
       "You’re saving money and the planet with each find!"
     ];
     setThriftTip(tips[Math.floor(Math.random() * tips.length)]);
+
+    // Generate a random thrift tip from an array
+    const facts = [
+      "A woman found a Vera Wang wedding dress at Goodwill for just $25! 😱💍",
+      "In 2018, a thrift shopper found a $1,000 Louis Vuitton bag for only $20! 👜✨",
+      "One thrift store in California sold a Picasso painting for just $5,000—it was worth over $100 million! 🎨💸",
+      "A pair of $1,200 Chanel boots were spotted at a Goodwill store in 2017 for just $50! 👢🖤",
+      "The world's most expensive thrift store find was a rare 1947 Christian Dior gown, purchased for $100 at a Texas thrift shop and worth over $100,000! 👗🔥",
+      "A woman found an authentic Gucci jacket at a thrift store for $12, later selling it for over $1,000! 💎💵",
+      "Thrift stores are a goldmine for vintage vinyl records—some rare records can be worth over $5,000! 🎶💿",
+      "In 2013, a man found a rare Rolex watch at a secondhand shop in New York for $5,000—it was worth $250,000! ⌚️💥",
+      "Thrifted designer jeans like Levi’s or Wranglers can sell for hundreds of dollars online—especially if they’re vintage and distressed! 👖💸"
+    ];
+    setThriftFact(tips[Math.floor(Math.random() * tips.length)]);
   }, []);
 
   if (showChallenges) {
@@ -55,17 +68,13 @@ function Dashboard({ name, email, onLogout }) {
         </div>
       
         <div className="thrift-tip">
-          <h4>Thrift Tip of the Day</h4>
+          <h4>Thrift Tip of the Day!</h4>
           <p>{thriftTip}</p>
         </div>
 
-        <div className="user-stats">
-          <h4>Your Thrift Stats</h4>
-          <ul>
-            <li>Total Items Saved: 32</li>
-            <li>Thrift Finds This Week: 4</li>
-            <li>Money Saved: $120</li>
-          </ul>
+        <div className="thrift-fact">
+          <h4>Fun Thrift Fact!</h4>
+          <p>{thriftFact}</p>
         </div>
         
         <button className="logout-btn" onClick={onLogout}>

@@ -23,7 +23,7 @@ body.challenges-body {
 */
 
 h1 {
-    font-size: 50;
+    font-size: 75;
     margin-bottom: 20px;
     color: #f06292;
 }
@@ -34,6 +34,14 @@ h1 {
     flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
+}
+
+.divider {
+    width: 100%; /* Make the line span the entire width */
+    height: 2px; /* Adjust thickness */
+    background-color: #f06292; /* Soft pink color */
+    border: none; /* Remove border */
+    margin: 20px 0; /* Add space above and below the line */
 }
 
 .challenge-box {
