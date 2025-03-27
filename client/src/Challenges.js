@@ -4,12 +4,17 @@ import './challenges.css';
 function Challenges({ onClose }) {
     const [challenges, setChallenges] = useState([]);
     const [imagePreviews, setImagePreviews] = useState({}); // Store image previews for each challenge
+    const [earnedPoints, setEarnedPoints] = useState(0); // Total points
+    const [completedChallenges, setCompletedChallenges] = useState(new Set()); // Track completed challenges
+
 
     // Sample challenges data - you can replace this with dynamic data from an API if needed
     const allChallenges = [
-        { title: "Find a Vintage T-Shirt", points: 10, description: "Find a vintage t-shirt from any thrift store and post a photo!" },
-        { title: "Upcycle an Old Item", points: 20, description: "Upcycle an old item from your wardrobe into something new!" },
-        { title: "Complete a Thrift Haul", points: 15, description: "Do a full thrift haul and share your finds!" }
+        { id: "1", title: "Find a Vintage T-Shirt", points: 10, description: "Find a vintage t-shirt from any thrift store and post a photo!" },
+        { id: "2", title: "Upcycle an Old Item", points: 20, description: "Upcycle an old item from your wardrobe into something new!" },
+        { id: "3", title: "Complete a Thrift Haul", points: 15, description: "Do a full thrift haul and share your finds!" },
+        { id: "4", title: "Style a Thrifted Outfit", points: 25, description: "Style an outfit using only thrifted clothes and post a photo!" },
+        { id: "5", title: "Thrift for a Specific Theme", points: 30, description: "Thrift items for a specific theme, e.g., '90s aesthetic'." }
     ];
 
     // Function to get three random challenges
@@ -21,15 +26,13 @@ function Challenges({ onClose }) {
     // Handle image file change and generate preview
     const handleImageChange = (event, challengeIndex) => {
         const file = event.target.files[0];
-        if (file) {
+        if (file && !completedChallenges.has(challenge.id)) {
             const previewUrl = URL.createObjectURL(file);
-            setImagePreviews(prev => ({
-                ...prev,
-                [challengeIndex]: previewUrl
-            }));
-
-            // Optionally, you can upload the image to a server here
-            // Example: uploadImageToServer(file);
+            setImagePreviews(prev => ({ ...prev, [challenge.id]: previewUrl }));
+            
+            // Add points only if challenge hasn't been completed
+            setEarnedPoints(prevPoints => prevPoints + challenge.points);
+            setCompletedChallenges(prev => new Set(prev).add(challenge.id));
         }
     };
 
@@ -44,6 +47,7 @@ function Challenges({ onClose }) {
     return (
         <div className="challenges-page">
             <h1>Thrift Challenges</h1>
+            <div className="points-display">Total Points: {earnedPoints}</div>
             <div className="challenges-container">
                 {challenges.map((challenge, index) => (
                     <div key={index} className="challenge-box">
