@@ -7,6 +7,7 @@ import Challenges from './Challenges';
 
 function Dashboard({ name, email, onLogout }) {
   const [showPopup, setShowPopup] = useState(true);
+  const [user, setUser] = useState(null);
   const [thriftTip, setThriftTip] = useState("");
   const [thriftFact, setThriftFact] = useState("");
   const [showChallenges, setShowChallenges] = useState(false);
