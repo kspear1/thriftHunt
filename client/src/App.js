@@ -204,7 +204,7 @@ function App() {
             {!isVerified ? (
                 <>
                     {/* CHANGED: Heading from "Enter Your Info" to "Welcome" */}
-                    <h1>Welcome</h1>
+                    <h1>Welcome to ThriftHunt!</h1>
                     
                     {/* Conditional rendering: Show verification form or auth forms */}
                     {isEmailSent ? (
