@@ -33,12 +33,29 @@ function Challenges({ onClose }) {
             // Add points only if challenge hasn't been completed
             setEarnedPoints(prevPoints => prevPoints + challenge.points);
             setCompletedChallenges(prev => new Set(prev).add(challenge.id));
+
+            // Save the updated points to localStorage
+            localStorage.setItem('earnedPoints', newPoints);
+            localStorage.setItem('completedChallenges', JSON.stringify(Array.from(completedChallenges)));
         }
     };
 
     useEffect(() => {
         setChallenges(getRandomChallenges());
         document.body.classList.add("challenges-body");
+
+        // Load points and completed challenges from localStorage if available
+        const savedPoints = localStorage.getItem('earnedPoints');
+        const savedCompletedChallenges = JSON.parse(localStorage.getItem('completedChallenges'));
+
+        if (savedPoints) {
+            setEarnedPoints(parseInt(savedPoints, 10));
+        }
+
+        if (savedCompletedChallenges) {
+            setCompletedChallenges(new Set(savedCompletedChallenges));
+        }
+        
         return () => {
             document.body.classList.remove("challenges-body"); // Cleanup on exit
         };
