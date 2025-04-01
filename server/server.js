@@ -117,6 +117,8 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
 
         // **Step 1: Authenticate the user using Supabase**
         const { data: { user }, error: authError } = await supabase.auth.getUser();  // Get user info from Supabase
+        console.log("Authenticated user:", user.email);
+        console.log("Request userId:", userId);
         if (authError || !user) {
             return res.status(401).json({ success: false, message: 'User not authenticated' });
         }
