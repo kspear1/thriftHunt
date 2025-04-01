@@ -42,6 +42,8 @@ function Redeem({ onClose }) {
             alert("Not enough points");
             return;
         }
+
+        console.log("Redeem button clicked for:", reward.title); // Debugging
         setSelectedReward(reward);
         setShowPopup(true);
     };
@@ -55,6 +57,7 @@ function Redeem({ onClose }) {
         localStorage.setItem('earnedPoints', updatedPoints);
         setEarnedPoints(updatedPoints);
         
+        console.log("Redeeming:", selectedReward.title); // Debugging
         // Close the popup
         setShowPopup(false);
         
