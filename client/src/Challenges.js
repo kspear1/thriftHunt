@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
 import { createClient } from '@supabase/supabase-js';
+require("dotenv").config();
 
 function Challenges({ onClose }) {
     const [challenges, setChallenges] = useState([]);
