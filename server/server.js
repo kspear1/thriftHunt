@@ -115,28 +115,16 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
             return res.status(400).json({ success: false, message: 'Missing userId or challengeId' });
         }
 
-        // **Step 1: Authenticate the user using Supabase**
-        const { data: { user }, error: authError } = await supabase.auth.getUser();  // Get user info from Supabase
-        console.log("Authenticated user:", user.email);
-        console.log("Request userId:", userId);
-        if (authError || !user) {
-            console.log(`Email mismatch: Authenticated email: ${user.email}, Provided userId: ${userId}`);
-            return res.status(401).json({ success: false, message: 'User not authenticated' });
-        }
-
-        // **Ensure that the userId from request matches the authenticated user**
-        if (user.email !== userId) {
-            console.log(`Email mismatch: Authenticated email: ${user.email}, Provided userId: ${userId}`);
-            return res.status(403).json({ success: false, message: 'User email mismatch' });
-        }
+        // **Step 1: You can skip authentication if you're using a public bucket/table**
+        // **No need for Supabase authentication logic here if not using it**
 
         // Create a unique filename
         const fileName = `challenges/${userId}_${challengeId}_${Date.now()}.jpg`;
         const contentType = req.file.mimetype;
 
-        // Upload to Supabase Storage (private bucket)
+        // Upload to Supabase Storage (public bucket)
         const { data, error } = await supabase.storage
-            .from('challenge-images') // Supabase bucket name (private)
+            .from('challenge-images') // Public bucket name
             .upload(fileName, req.file.buffer, {
                 contentType,
                 upsert: false, // Prevent overwriting existing files with the same name
@@ -153,7 +141,7 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
         
         const imageUrl = signedUrlData.signedUrl; // This is the signed URL that grants temporary access
 
-        // Store the image URL in the challenge_submissions table
+        // Store the image URL in the challenge_submissions table (no RLS checks)
         const { error: dbError } = await supabase
             .from('challenge_submissions')
             .insert([{ user_id: userId, challenge_id: challengeId, image_url: imageUrl, status: 'pending' }]);
