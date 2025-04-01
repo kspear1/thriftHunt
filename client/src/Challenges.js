@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
+import Redeem from './Redeem';
 
 
 function Challenges({ onClose }) {
