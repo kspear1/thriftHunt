@@ -120,6 +120,7 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
         console.log("Authenticated user:", user.email);
         console.log("Request userId:", userId);
         if (authError || !user) {
+            console.log(`Email mismatch: Authenticated email: ${user.email}, Provided userId: ${userId}`);
             return res.status(401).json({ success: false, message: 'User not authenticated' });
         }
 
