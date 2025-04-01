@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@supabase/supabase-js';
 
 function Challenges({ onClose }) {
     const [challenges, setChallenges] = useState([]);
     const [imagePreviews, setImagePreviews] = useState({}); // Store image previews for each challenge
     const [earnedPoints, setEarnedPoints] = useState(0); // Total points
     const [completedChallenges, setCompletedChallenges] = useState(new Set()); // Track completed challenges
+
+    const supabase = createClient(
+        process.env.SUPABASE_URL,
+        process.env.SUPABASE_ANON_KEY
+      );
 
 
     // Sample challenges data - you can replace this with dynamic data from an API if needed
@@ -79,15 +84,20 @@ function Challenges({ onClose }) {
 
         const fetchPoints = async () => {
             try {
-                const userId = 'current-user-id'; // Replace with actual logged-in user ID
+                const { data: { user } } = await supabase.auth.getUser(); // Dynamically fetch user
+                if (!user) {
+                    alert('User not logged in!');
+                    return;
+                }
+                
                 const { data, error } = await supabase
                     .from('users')
                     .select('total_points')
-                    .eq('id', userId)
+                    .eq('id', user.id) // Use user.id to fetch points for the authenticated user
                     .single();
-    
+                
                 if (error) throw error;
-    
+                
                 setEarnedPoints(data.total_points || 0);
             } catch (error) {
                 console.error('Error fetching points:', error);
