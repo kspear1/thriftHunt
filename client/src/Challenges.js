@@ -52,21 +52,19 @@ function Challenges({ onClose }) {
     };
 
     useEffect(() => {
-        setChallenges(getRandomChallenges());
+        const newChallenges = getRandomChallenges();
+        setChallenges(newChallenges);
         document.body.classList.add("challenges-body");
-
-        // Load points and completed challenges from localStorage if available
+    
+        // Load points from localStorage
         const savedPoints = localStorage.getItem('earnedPoints');
-        const savedCompletedChallenges = JSON.parse(localStorage.getItem('completedChallenges'));
-
         if (savedPoints) {
             setEarnedPoints(parseInt(savedPoints, 10));
         }
-
-        if (savedCompletedChallenges) {
-            setCompletedChallenges(new Set(savedCompletedChallenges));
-        }
-
+    
+        // Reset completed challenges when new challenges are selected
+        setCompletedChallenges(new Set());
+    
         return () => {
             document.body.classList.remove("challenges-body"); // Cleanup on exit
         };

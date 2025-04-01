@@ -73,7 +73,7 @@ function Redeem({ onClose }) {
                     </div>
                 ))}
             </div>
-            <button className="dashboard-btn" onClick={onClose}>Dashboard!</button>
+            <button className="dashboard-btn" onClick={onClose}>Challenges!</button>
 
             {showPopup && (
                 <div className="popup-overlay">
