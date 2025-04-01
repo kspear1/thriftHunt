@@ -104,16 +104,26 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
     try {
         console.log("File:", req.file);
         console.log("Body:", req.body); // userId and challengeId should be present
-        console.log("Authenticated user:", user.email);  // Log the email you're using
-        console.log("Inserting challenge submission with user_id:", userId);
 
         if (!req.file) {
             return res.status(400).json({ success: false, message: 'No file uploaded' });
         }
 
         const { userId, challengeId } = req.body; // Get user & challenge ID from frontend
+        
         if (!userId || !challengeId) {
             return res.status(400).json({ success: false, message: 'Missing userId or challengeId' });
+        }
+
+        // **Step 1: Authenticate the user using Supabase**
+        const { data: { user }, error: authError } = await supabase.auth.getUser();  // Get user info from Supabase
+        if (authError || !user) {
+            return res.status(401).json({ success: false, message: 'User not authenticated' });
+        }
+
+        // **Ensure that the userId from request matches the authenticated user**
+        if (user.email !== userId) {
+            return res.status(403).json({ success: false, message: 'User email mismatch' });
         }
 
         // Create a unique filename
