@@ -102,7 +102,6 @@ app.post('/verify', async (req, res) => {
 // ========================================================
 app.post('/upload-challenge-image', upload.single('image'), async (req, res) => {
     try {
-
         console.log("File:", req.file);
         console.log("Body:", req.body); // userId and challengeId should be present
 
@@ -119,21 +118,26 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
         const fileName = `challenges/${userId}_${challengeId}_${Date.now()}.jpg`;
         const contentType = req.file.mimetype;
 
-        // Upload to Supabase Storage
+        // Upload to Supabase Storage (private bucket)
         const { data, error } = await supabase.storage
-            .from('challenge-images') // Supabase bucket name
+            .from('challenge-images') // Supabase bucket name (private)
             .upload(fileName, req.file.buffer, {
                 contentType,
-                upsert: false,
+                upsert: false, // Prevent overwriting existing files with the same name
             });
 
         if (error) throw error;
 
-        // Get the public URL of the uploaded image
-        const { data: publicUrlData } = supabase.storage.from('challenge-images').getPublicUrl(fileName);
-        const imageUrl = publicUrlData.publicUrl;
+        // Get a signed URL of the uploaded image (valid for a limited time)
+        const { data: signedUrlData, error: signedUrlError } = await supabase.storage
+            .from('challenge-images')
+            .createSignedUrl(fileName, 60); // Expires in 60 seconds
 
-        // Store image URL in database (optional)
+        if (signedUrlError) throw signedUrlError;
+        
+        const imageUrl = signedUrlData.signedUrl; // This is the signed URL that grants temporary access
+
+        // Store the image URL in the challenge_submissions table
         const { error: dbError } = await supabase
             .from('challenge_submissions')
             .insert([{ user_id: userId, challenge_id: challengeId, image_url: imageUrl, status: 'pending' }]);
