@@ -125,6 +125,7 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
 
         // **Ensure that the userId from request matches the authenticated user**
         if (user.email !== userId) {
+            console.log(`Email mismatch: Authenticated email: ${user.email}, Provided userId: ${userId}`);
             return res.status(403).json({ success: false, message: 'User email mismatch' });
         }
 
