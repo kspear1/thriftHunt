@@ -47,12 +47,18 @@ function Redeem({ onClose }) {
     };
 
     const confirmRedeem = () => {
-        setEarnedPoints(prev => {
-            const updatedPoints = prev - selectedReward.points;
-            localStorage.setItem('earnedPoints', updatedPoints);
-            return updatedPoints;
-        });
+        if (!selectedReward) return;
+    
+        const updatedPoints = earnedPoints - selectedReward.points;
+    
+        // Update local storage and state correctly
+        localStorage.setItem('earnedPoints', updatedPoints);
+        setEarnedPoints(updatedPoints);
+        
+        // Close the popup
         setShowPopup(false);
+        
+        // Show a confirmation message
         alert(`You have successfully redeemed: ${selectedReward.title}`);
     };
 
