@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
-import { createClient } from '@supabase/supabase-js';
-require("dotenv").config();
+import axios from 'axios';
 
-function Challenges({ onClose }) {
+function Challenges({ email, onClose }) {
     const [challenges, setChallenges] = useState([]);
     const [imagePreviews, setImagePreviews] = useState({}); // Store image previews for each challenge
     const [earnedPoints, setEarnedPoints] = useState(0); // Total points
     const [completedChallenges, setCompletedChallenges] = useState(new Set()); // Track completed challenges
-
-    const supabase = createClient(
-        process.env.SUPABASE_URL,
-        process.env.SUPABASE_ANON_KEY
-      );
 
 
     // Sample challenges data - you can replace this with dynamic data from an API if needed
@@ -35,43 +29,33 @@ function Challenges({ onClose }) {
         const file = event.target.files[0];
         if (!file || completedChallenges.has(challenge.id)) return;
     
-        // Get authenticated user
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-            alert('User not logged in!');
-            return;
-        }
-    
         const formData = new FormData();
         formData.append('image', file);
-        formData.append('userId', user.id);
+        formData.append('userId', email); // Use email as userId
         formData.append('challengeId', challenge.id);
     
         try {
-            const response = await fetch('/upload-challenge-image', {
-                method: 'POST',
-                body: formData,
+            const response = await axios.post('/upload-challenge-image', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
             });
     
-            const data = await response.json();
-            if (data.success) {
+            if (response.data.success) {
                 // Update UI with the uploaded image
-                setImagePreviews(prev => ({ ...prev, [challenge.id]: data.imageUrl }));
+                setImagePreviews(prev => ({ ...prev, [challenge.id]: response.data.imageUrl }));
     
                 // Store completed challenge in the database
                 const { error } = await supabase
                     .from('completed_challenges')
-                    .insert([{ user_id: user.id, challenge_id: challenge.id }]);
+                    .insert([{ user_id: email, challenge_id: challenge.id }]); // Use email instead of user.id
     
                 if (error) throw error;
     
                 // Update state to reflect completed challenge
                 setCompletedChallenges(prev => new Set(prev).add(challenge.id));
     
-                // Alert the user
                 alert('Image uploaded! Challenge marked as completed.');
             } else {
-                alert('Upload failed: ' + data.message);
+                alert('Upload failed: ' + response.data.message);
             }
         } catch (error) {
             console.error('Error uploading image:', error);
@@ -82,23 +66,22 @@ function Challenges({ onClose }) {
     useEffect(() => {
         setChallenges(getRandomChallenges());
         document.body.classList.add("challenges-body");
-
+    
         const fetchPoints = async () => {
             try {
-                const { data: { user } } = await supabase.auth.getUser(); // Dynamically fetch user
-                if (!user) {
-                    alert('User not logged in!');
+                if (!email) {
+                    alert('User email is missing!');
                     return;
                 }
-                
+    
                 const { data, error } = await supabase
                     .from('users')
                     .select('total_points')
-                    .eq('id', user.id) // Use user.id to fetch points for the authenticated user
+                    .eq('email', email) // Use email instead of user.id
                     .single();
-                
+    
                 if (error) throw error;
-                
+    
                 setEarnedPoints(data.total_points || 0);
             } catch (error) {
                 console.error('Error fetching points:', error);
@@ -106,11 +89,11 @@ function Challenges({ onClose }) {
         };
     
         fetchPoints();
-
+    
         return () => {
             document.body.classList.remove("challenges-body"); // Cleanup on exit
         };
-    }, []);
+    }, [email]); // Re-run if the email changes
 
     return (
         <div className="challenges-page">

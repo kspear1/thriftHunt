@@ -39,7 +39,7 @@ function Dashboard({ name, email, onLogout }) {
   }, []);
 
   if (showChallenges) {
-    return <Challenges user = {user} onClose={() => setShowChallenges(false)} />;
+    return <Challenges email={user.email} onClose={() => setShowChallenges(false)} />;
 }
 
   return (
