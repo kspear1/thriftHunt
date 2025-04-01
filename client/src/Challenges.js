@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
 
+
 function Challenges({ onClose }) {
     const [challenges, setChallenges] = useState([]);
     const [imagePreviews, setImagePreviews] = useState({}); // Store image previews for each challenge
     const [earnedPoints, setEarnedPoints] = useState(0); // Total points
     const [completedChallenges, setCompletedChallenges] = useState(new Set()); // Track completed challenges
+    const [showRedeem, setShowRedeem] = useState(false);
 
 
     // Sample challenges data - you can replace this with dynamic data from an API if needed
@@ -69,6 +71,10 @@ function Challenges({ onClose }) {
         };
     }, []);
 
+    if (showRedeem) {
+        return <Redeem onClose={() => setShowRedeem(false)} />;
+    }
+
     return (
         <div className="challenges-page">
             <h1>Thrift Challenges</h1>
@@ -109,6 +115,9 @@ function Challenges({ onClose }) {
             </div>
             <button className="dashboard-btn" onClick={onClose}>
                 Dashboard!
+            </button>
+            <button className="challenges-btn" onClick={() => setShowRedeem(true)}>
+                Redeem!      
             </button>
         </div>
     );
