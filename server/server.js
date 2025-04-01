@@ -144,19 +144,40 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
 });
 
 app.post('/review-challenge-submission', async (req, res) => {
-    const { submissionId, status } = req.body; // "approved" or "rejected"
+    const { submissionId, status, userId } = req.body; // Include userId
 
-    if (!submissionId || !['approved', 'rejected'].includes(status)) {
+    if (!submissionId || !userId || !['approved', 'rejected'].includes(status)) {
         return res.status(400).json({ success: false, message: 'Invalid request' });
     }
 
     try {
-        const { error } = await supabase
+        // Get the points from the challenge submission
+        const { data: submission, error: fetchError } = await supabase
+            .from('challenge_submissions')
+            .select('points')
+            .eq('id', submissionId)
+            .single();
+
+        if (fetchError || !submission) throw new Error('Submission not found');
+
+        // If approved, update user points
+        if (status === 'approved') {
+            // Update user's points in the users table (Assuming a `users` table with `total_points` column)
+            const { error: pointsError } = await supabase
+                .from('users')
+                .update({ total_points: supabase.raw('total_points + ?', [submission.points]) })
+                .eq('id', userId);
+
+            if (pointsError) throw pointsError;
+        }
+
+        // Update the submission status
+        const { error: updateError } = await supabase
             .from('challenge_submissions')
             .update({ status })
             .eq('id', submissionId);
 
-        if (error) throw error;
+        if (updateError) throw updateError;
 
         res.json({ success: true, message: `Submission ${status} successfully` });
     } catch (error) {
