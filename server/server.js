@@ -102,6 +102,10 @@ app.post('/verify', async (req, res) => {
 // ========================================================
 app.post('/upload-challenge-image', upload.single('image'), async (req, res) => {
     try {
+
+        console.log("File:", req.file);
+        console.log("Body:", req.body); // userId and challengeId should be present
+
         if (!req.file) {
             return res.status(400).json({ success: false, message: 'No file uploaded' });
         }
