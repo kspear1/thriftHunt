@@ -104,6 +104,8 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
     try {
         console.log("File:", req.file);
         console.log("Body:", req.body); // userId and challengeId should be present
+        console.log("Authenticated user:", user.email);  // Log the email you're using
+        console.log("Inserting challenge submission with user_id:", userId);
 
         if (!req.file) {
             return res.status(400).json({ success: false, message: 'No file uploaded' });
