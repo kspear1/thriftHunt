@@ -102,46 +102,34 @@ app.post('/verify', async (req, res) => {
 // ========================================================
 app.post('/upload-challenge-image', upload.single('image'), async (req, res) => {
     try {
-        console.log("File:", req.file);
-        console.log("Body:", req.body); // userId and challengeId should be present
-
         if (!req.file) {
             return res.status(400).json({ success: false, message: 'No file uploaded' });
         }
 
         const { userId, challengeId } = req.body; // Get user & challenge ID from frontend
-        
         if (!userId || !challengeId) {
             return res.status(400).json({ success: false, message: 'Missing userId or challengeId' });
         }
-
-        // **Step 1: You can skip authentication if you're using a public bucket/table**
-        // **No need for Supabase authentication logic here if not using it**
 
         // Create a unique filename
         const fileName = `challenges/${userId}_${challengeId}_${Date.now()}.jpg`;
         const contentType = req.file.mimetype;
 
-        // Upload to Supabase Storage (public bucket)
+        // Upload to Supabase Storage
         const { data, error } = await supabase.storage
-            .from('challenge-images') // Public bucket name
+            .from('challenge-images') // Supabase bucket name
             .upload(fileName, req.file.buffer, {
                 contentType,
-                upsert: false, // Prevent overwriting existing files with the same name
+                upsert: false,
             });
 
         if (error) throw error;
 
-        // Get a signed URL of the uploaded image (valid for a limited time)
-        const { data: signedUrlData, error: signedUrlError } = await supabase.storage
-            .from('challenge-images')
-            .createSignedUrl(fileName, 60); // Expires in 60 seconds
+        // Get the public URL of the uploaded image
+        const { data: publicUrlData } = supabase.storage.from('challenge-images').getPublicUrl(fileName);
+        const imageUrl = publicUrlData.publicUrl;
 
-        if (signedUrlError) throw signedUrlError;
-        
-        const imageUrl = signedUrlData.signedUrl; // This is the signed URL that grants temporary access
-
-        // Store the image URL in the challenge_submissions table (no RLS checks)
+        // Store image URL in database (optional)
         const { error: dbError } = await supabase
             .from('challenge_submissions')
             .insert([{ user_id: userId, challenge_id: challengeId, image_url: imageUrl, status: 'pending' }]);
@@ -156,40 +144,19 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
 });
 
 app.post('/review-challenge-submission', async (req, res) => {
-    const { submissionId, status, userId } = req.body; // Include userId
+    const { submissionId, status } = req.body; // "approved" or "rejected"
 
-    if (!submissionId || !userId || !['approved', 'rejected'].includes(status)) {
+    if (!submissionId || !['approved', 'rejected'].includes(status)) {
         return res.status(400).json({ success: false, message: 'Invalid request' });
     }
 
     try {
-        // Get the points from the challenge submission
-        const { data: submission, error: fetchError } = await supabase
-            .from('challenge_submissions')
-            .select('points')
-            .eq('id', submissionId)
-            .single();
-
-        if (fetchError || !submission) throw new Error('Submission not found');
-
-        // If approved, update user points
-        if (status === 'approved') {
-            // Update user's points in the users table (Assuming a `users` table with `total_points` column)
-            const { error: pointsError } = await supabase
-                .from('users')
-                .update({ total_points: supabase.raw('total_points + ?', [submission.points]) })
-                .eq('id', userId);
-
-            if (pointsError) throw pointsError;
-        }
-
-        // Update the submission status
-        const { error: updateError } = await supabase
+        const { error } = await supabase
             .from('challenge_submissions')
             .update({ status })
             .eq('id', submissionId);
 
-        if (updateError) throw updateError;
+        if (error) throw error;
 
         res.json({ success: true, message: `Submission ${status} successfully` });
     } catch (error) {

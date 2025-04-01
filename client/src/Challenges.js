@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
-import axios from 'axios';
 
-function Challenges({ email, onClose }) {
+function Challenges({ onClose }) {
     const [challenges, setChallenges] = useState([]);
     const [imagePreviews, setImagePreviews] = useState({}); // Store image previews for each challenge
     const [earnedPoints, setEarnedPoints] = useState(0); // Total points
@@ -25,75 +24,50 @@ function Challenges({ email, onClose }) {
     };
 
     // Handle image file change and generate preview
-    const handleImageChange = async (event, challenge) => {
+    const handleImageChange = (event, challenge) => {
         const file = event.target.files[0];
-        if (!file || completedChallenges.has(challenge.id)) return;
-    
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('userId', email); // Use email as userId
-        formData.append('challengeId', challenge.id);
-    
-        try {
-            const response = await axios.post('/upload-challenge-image', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
+        if (file && !completedChallenges.has(challenge.id)) {
+            const previewUrl = URL.createObjectURL(file);
+            setImagePreviews(prev => ({ ...prev, [challenge.id]: previewUrl }));
+            
+            setEarnedPoints(prevPoints => {
+                const updatedPoints = prevPoints + challenge.points;
+                
+                // Save the updated points to localStorage
+                localStorage.setItem('earnedPoints', updatedPoints);
+
+                // Save the completed challenges to localStorage
+                setCompletedChallenges(prev => {
+                    const updatedChallenges = new Set(prev).add(challenge.id);
+                    localStorage.setItem('completedChallenges', JSON.stringify(Array.from(updatedChallenges)));
+                    return updatedChallenges;
+                });
+
+                return updatedPoints;
             });
-    
-            if (response.data.success) {
-                // Update UI with the uploaded image
-                setImagePreviews(prev => ({ ...prev, [challenge.id]: response.data.imageUrl }));
-    
-                // Store completed challenge in the database
-                const { error } = await supabase
-                    .from('completed_challenges')
-                    .insert([{ user_id: email, challenge_id: challenge.id }]); // Use email instead of user.id
-    
-                if (error) throw error;
-    
-                // Update state to reflect completed challenge
-                setCompletedChallenges(prev => new Set(prev).add(challenge.id));
-    
-                alert('Image uploaded! Challenge marked as completed.');
-            } else {
-                alert('Upload failed: ' + response.data.message);
-            }
-        } catch (error) {
-            console.error('Error uploading image:', error);
-            alert('Error uploading image');
         }
     };
 
     useEffect(() => {
         setChallenges(getRandomChallenges());
         document.body.classList.add("challenges-body");
-    
-        const fetchPoints = async () => {
-            try {
-                if (!email) {
-                    alert('User email is missing!');
-                    return;
-                }
-    
-                const { data, error } = await supabase
-                    .from('users')
-                    .select('total_points')
-                    .eq('email', email) // Use email instead of user.id
-                    .single();
-    
-                if (error) throw error;
-    
-                setEarnedPoints(data.total_points || 0);
-            } catch (error) {
-                console.error('Error fetching points:', error);
-            }
-        };
-    
-        fetchPoints();
-    
+
+        // Load points and completed challenges from localStorage if available
+        const savedPoints = localStorage.getItem('earnedPoints');
+        const savedCompletedChallenges = JSON.parse(localStorage.getItem('completedChallenges'));
+
+        if (savedPoints) {
+            setEarnedPoints(parseInt(savedPoints, 10));
+        }
+
+        if (savedCompletedChallenges) {
+            setCompletedChallenges(new Set(savedCompletedChallenges));
+        }
+
         return () => {
             document.body.classList.remove("challenges-body"); // Cleanup on exit
         };
-    }, [email]); // Re-run if the email changes
+    }, []);
 
     return (
         <div className="challenges-page">
@@ -117,14 +91,10 @@ function Challenges({ email, onClose }) {
                                 style={{ display: 'none' }}
                                 accept="image/*"
                                 onChange={(event) => handleImageChange(event, challenge)}
-                                disabled={completedChallenges.has(challenge.id)} // Disable if challenge is completed
                             />
                             {/* Custom styled label acting as button */}
-                            <label 
-                                htmlFor={`file-upload-${challenge.id}`} 
-                                className={`upload-button ${completedChallenges.has(challenge.id) ? 'disabled' : ''}`}
-                            >
-                                {completedChallenges.has(challenge.id) ? 'Completed!' : 'Upload Photo'}
+                            <label htmlFor={`file-upload-${challenge.id}`} className="upload-button">
+                                Upload Photo
                             </label>
                             
                             {/* Image Preview */}
