@@ -5,7 +5,10 @@
 
 /* Base styling */
 body {
-    background-image: url("thriftHunt.png");
+    background-image: url("thriftHunt2.png");
+    background-size: cover;  /* Ensures the image covers the whole background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; /* Centers the image */
     font-family: 'Poppins', sans-serif;
     color: #e0e0e0;
     margin: 0;
