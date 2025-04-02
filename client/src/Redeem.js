@@ -3,7 +3,7 @@ import './challenges.css';
 import './redeem.css'
 import Challenges from './Challenges';
 
-function Redeem({ onClose }) {
+function Redeem({}) {
     const [earnedPoints, setEarnedPoints] = useState(0);
     const [rewards, setRewards] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
@@ -41,7 +41,7 @@ function Redeem({ onClose }) {
     }, []);
 
     if (showChallenges) {
-        return <Challenges email={email} onClose={() => setShowChallenges(false)} />;
+        return <Challenges onClose={() => setShowChallenges(false)} />;
     }
 
     const handleRedeem = (reward) => {
