@@ -54,7 +54,7 @@ function Challenges({ onClose }) {
     useEffect(() => {
         const newChallenges = getRandomChallenges();
         setChallenges(newChallenges);
-        document.body.classList.add("challenges-body");
+        /*document.body.classList.add("challenges-body");*/
     
         // Load points from localStorage
         const savedPoints = localStorage.getItem('earnedPoints');
@@ -66,9 +66,9 @@ function Challenges({ onClose }) {
         // Reset completed challenges when new challenges are selected
         setCompletedChallenges(new Set());
     
-        return () => {
+        /*return () => {
             document.body.classList.remove("challenges-body"); // Cleanup on exit
-        };
+        };*/
     }, []);
 
     if (showRedeem) {

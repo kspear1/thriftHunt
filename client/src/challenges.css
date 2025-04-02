@@ -1,13 +1,6 @@
 /* Challenges.css */
 
 /* Base styling */
-body.challenges-body {
-    background: linear-gradient(135deg, #f8b0d7, #ffcccb); /* Keep the same gradient */
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
 
 /* Full-screen styling for Challenges page */
 /* .challenges-page {
