@@ -74,7 +74,7 @@ function Redeem({ onClose }) {
             <div className="challenges-container">
                 {rewards.map((reward) => (
                     <div key={reward.id} className="challenge-box">
-                        <h2>{reward.title}</h2>
+                        <h2 className="item-title">{reward.title}</h2>
                         <img src={reward.image} alt={reward.title} className="reward-image" />
                         <div className="points">Required Points: {reward.points}</div>
                         <button className="redeem-button" onClick={() => handleRedeem(reward)}>
