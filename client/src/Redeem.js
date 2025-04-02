@@ -52,19 +52,17 @@ function Redeem({ onClose }) {
     };
 
     const confirmRedeem = () => {
-        if (!selectedReward) return;
-    
         const updatedPoints = earnedPoints - selectedReward.points;
     
-        // Update local storage and state correctly
+        // Save new points to localStorage so it persists
         localStorage.setItem('earnedPoints', updatedPoints);
+    
+        // Update state to reflect new points
         setEarnedPoints(updatedPoints);
-        
-        console.log("Redeeming:", selectedReward.title); // Debugging
-        // Close the popup
+    
+        // Close popup
         setShowPopup(false);
-        
-        // Show a confirmation message
+    
         alert(`You have successfully redeemed: ${selectedReward.title}`);
     };
 
