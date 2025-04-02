@@ -32,7 +32,7 @@ h1 {
     font-size: 2.8rem; /* Increased font size */
     font-family: 'Emilys Candy';
     font-weight: 700;
-    /*color: #f06292; Soft pink for the header */
+    color: white;
     margin-bottom: 20px;
     letter-spacing: 1px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
