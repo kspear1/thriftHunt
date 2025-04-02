@@ -32,20 +32,18 @@ function Challenges({ onClose }) {
         if (file && !completedChallenges.has(challenge.id)) {
             const previewUrl = URL.createObjectURL(file);
             setImagePreviews(prev => ({ ...prev, [challenge.id]: previewUrl }));
-            
+    
+            //Update completed challenges
+            setCompletedChallenges(prev => {
+                const updatedChallenges = new Set(prev).add(challenge.id);
+                localStorage.setItem('completedChallenges', JSON.stringify(Array.from(updatedChallenges))); // Save to storage
+                return updatedChallenges;
+            });
+    
+            //Update points
             setEarnedPoints(prevPoints => {
                 const updatedPoints = prevPoints + challenge.points;
-                
-                // Save the updated points to localStorage
-                localStorage.setItem('earnedPoints', updatedPoints);
-
-                // Save the completed challenges to localStorage
-                setCompletedChallenges(prev => {
-                    const updatedChallenges = new Set(prev).add(challenge.id);
-                    localStorage.setItem('completedChallenges', JSON.stringify(Array.from(updatedChallenges)));
-                    return updatedChallenges;
-                });
-
+                localStorage.setItem('earnedPoints', updatedPoints); // Save to storage
                 return updatedPoints;
             });
         }
@@ -56,12 +54,13 @@ function Challenges({ onClose }) {
         setChallenges(newChallenges);
         document.body.classList.add("challenges-body");
     
-        // Load points from localStorage
+        //Load points from localStorage
         const savedPoints = localStorage.getItem('earnedPoints');
         setEarnedPoints(savedPoints ? parseInt(savedPoints, 10) : 0);
     
-        // Reset completed challenges when new challenges are selected
-        setCompletedChallenges(new Set());
+        // Load completed challenges
+        const savedCompleted = localStorage.getItem('completedChallenges');
+        setCompletedChallenges(savedCompleted ? new Set(JSON.parse(savedCompleted)) : new Set());
     
         return () => {
             document.body.classList.remove("challenges-body"); // Cleanup on exit
