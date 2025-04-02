@@ -54,10 +54,10 @@ function Redeem({ onClose }) {
     const confirmRedeem = () => {
         const updatedPoints = earnedPoints - selectedReward.points;
     
-        // Save new points to localStorage so it persists
+        // 💾 Update localStorage FIRST
         localStorage.setItem('earnedPoints', updatedPoints);
     
-        // Update state to reflect new points
+        // 🔄 THEN update state so UI changes immediately
         setEarnedPoints(updatedPoints);
     
         // Close popup

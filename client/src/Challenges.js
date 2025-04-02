@@ -58,9 +58,7 @@ function Challenges({ onClose }) {
     
         // Load points from localStorage
         const savedPoints = localStorage.getItem('earnedPoints');
-        if (savedPoints) {
-            setEarnedPoints(parseInt(savedPoints, 10));
-        }
+        setEarnedPoints(savedPoints ? parseInt(savedPoints, 10) : 0);
     
         // Reset completed challenges when new challenges are selected
         setCompletedChallenges(new Set());
