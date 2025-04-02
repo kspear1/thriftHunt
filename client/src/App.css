@@ -1,5 +1,7 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Emilys+Candy&display=swap');
+
 
 /* Base styling */
 body {
@@ -27,10 +29,13 @@ body {
 
 /* Heading styles - h1 unchanged from original */
 h1 {
-    font-size: 24px;
-    font-weight: 600;
-    color: white; /* Bright pink */
+    font-size: 2.8rem; /* Increased font size */
+    font-family: 'Emilys Candy';
+    font-weight: 700;
+    /*color: #f06292; Soft pink for the header */
     margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* ADDED: h2 heading style for "Verify Your Email" and dashboard sections */
@@ -40,6 +45,7 @@ h2 {
     color: white; /* Bright pink */
     margin-bottom: 15px;
 }
+
 
 /* ADDED: h3 heading style for "Hello, [name]!" in dashboard 
 .App h3 {
@@ -51,8 +57,9 @@ h2 {
 */
 
 /* Welcome Heading */
-.welcome-heading {
+.welcome-heading-app {
     font-size: 2.8rem; /* Increased font size */
+    font-family: 'Emilys Candy';
     font-weight: 700;
     color: #f06292; /* Soft pink for the header */
     margin-bottom: 20px;
