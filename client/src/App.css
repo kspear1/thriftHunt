@@ -19,7 +19,7 @@ body {
 /* Main app container, unchanged from original */
 .App {
     text-align: center;
-    background: rgba(255, 255, 255, 0.859);
+    background: rgba(0, 0, 0, 0.859);
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -32,7 +32,7 @@ h1 {
     font-size: 2.8rem; /* Increased font size */
     font-family: 'Emilys Candy';
     font-weight: 700;
-    color: #f8b0d7;
+    color: white;
     margin-bottom: 20px;
     letter-spacing: 1px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
