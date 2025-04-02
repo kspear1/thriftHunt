@@ -20,6 +20,7 @@
     max-width: 400px;
     width: 80%;
     animation: fadeIn 0.3s ease-in-out;
+    color: #f06292
 }
 
 .popup button {
@@ -32,12 +33,12 @@
 }
 
 .confirm-btn {
-    background: #4CAF50;
+    background: #f06292;
     color: white;
 }
 
 .cancel-btn {
-    background: #f44336;
+    background: #f50057;
     color: white;
 }
 
