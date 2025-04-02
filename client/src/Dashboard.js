@@ -45,7 +45,7 @@ function Dashboard({ name, email, onLogout }) {
   return (
     <div className="dashboard-container">
       <div className="dashboard">
-        <h2>Welcome to ThriftHunt!</h2>
+        <h2 className="welcome-heading">Welcome to ThriftHunt!</h2>
         
         {showPopup && (
           <div className="welcome-popup">
