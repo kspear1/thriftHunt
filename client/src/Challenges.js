@@ -80,6 +80,9 @@ function Challenges({ onClose }) {
             <h1>Thrift Challenges</h1>
             <div className="points-display">Total Points: {earnedPoints}</div>
             <hr className="divider" />
+            <button className="challenges-btn" onClick={() => setShowRedeem(true)}>
+                Redeem!      
+            </button>
             <div className="challenges-container">
                 {challenges.map((challenge, index) => (
                     <div key={index} className="challenge-box">
@@ -115,9 +118,6 @@ function Challenges({ onClose }) {
             </div>
             <button className="dashboard-btn" onClick={onClose}>
                 Dashboard!
-            </button>
-            <button className="challenges-btn" onClick={() => setShowRedeem(true)}>
-                Redeem!      
             </button>
         </div>
     );
