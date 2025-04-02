@@ -1,0 +1,53 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dimmed background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999; /* Ensure it's on top */
+}
+
+.popup {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 400px;
+    width: 80%;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.popup button {
+    margin: 10px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.confirm-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.cancel-btn {
+    background: #f44336;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
