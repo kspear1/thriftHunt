@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
-import './reedem.css'
+import './redeem.css'
 
 function Redeem({ onClose }) {
     const [earnedPoints, setEarnedPoints] = useState(0);
