@@ -11,10 +11,10 @@ function Redeem({ onClose }) {
     // Sample rewards data
     const allRewards = [
         { id: "1", title: "Vintage Clothing Item", points: 100, image: "vintage.png" },
-        { id: "2", title: "Thrift Gift Card", points: 200, image: "giftcard.jpg" },
+        { id: "2", title: "Thrift Gift Card", points: 200, image: "giftcard.png" },
         { id: "3", title: "Vintage Deadstock Clothing Item", points: 200, image: "deadstock.png" },
         { id: "4", title: "Mystery Thrift Box", points: 300, image: "mystery.jpg" },
-        { id: "5", title: "Vintage Designer Clothing Item", points: 150, image: "sunglasses.jpg" }
+        { id: "5", title: "Vintage Designer Clothing Item", points: 150, image: "designer.jpg" }
     ];
 
     // Function to get three random rewards
