@@ -43,11 +43,19 @@ function Redeem({ onClose }) {
             alert("Not enough points");
             return;
         }
-
+    
         console.log("Redeem button clicked for:", reward.title); // Debugging
         setSelectedReward(reward);
         setShowPopup(true);
-
+    
+        // Deduct points and update localStorage
+        const itemCost = reward.points;
+        setEarnedPoints(prevPoints => {
+            const updatedPoints = Math.max(0, prevPoints - itemCost); // Prevent negative points
+            localStorage.setItem('earnedPoints', updatedPoints); // Save to storage
+            return updatedPoints;
+        });
+    
         console.log("confirmRedeem function:", confirmRedeem); // Check
     };
 
