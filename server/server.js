@@ -28,10 +28,10 @@ app.post('/register', async (req, res) => {
     console.log(`Received registration request for email: ${email}`);
 
     // Email validation
-    const emailPattern = /@(spelman\.edu|morehouse\.edu)$/;
+    /* const emailPattern = /@(spelman\.edu|morehouse\.edu)$/;
     if (!emailPattern.test(email)) {
         return res.status(400).json({ success: false, message: 'Email must end with @spelman.edu or @morehouse.edu.' });
-    }
+    } */
 
     try {
         // Register user in Supabase Auth
