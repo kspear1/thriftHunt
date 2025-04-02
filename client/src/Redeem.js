@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
 import './redeem.css'
+import Challenges from './Challenges';
 
 function Redeem({ onClose }) {
     const [earnedPoints, setEarnedPoints] = useState(0);
     const [rewards, setRewards] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedReward, setSelectedReward] = useState(null);
+    const [showChallenges, setShowChallenges] = useState(false);
 
     // Sample rewards data
     const allRewards = [
@@ -37,6 +39,10 @@ function Redeem({ onClose }) {
             document.body.classList.remove("challenges-body");
         };
     }, []);
+
+    if (showChallenges) {
+        return <Challenges email={email} onClose={() => setShowChallenges(false)} />;
+    }
 
     const handleRedeem = (reward) => {
         if (earnedPoints < reward.points) {
@@ -83,7 +89,9 @@ function Redeem({ onClose }) {
                     </div>
                 ))}
             </div>
-            <button className="dashboard-btn" onClick={onClose}>Challenges!</button>
+            <button className="challenges-btn" onClick={() => setShowChallenges(true)}>
+                My Challenges!        
+            </button>
 
             {showPopup && (
                 <div className="popup-overlay">
