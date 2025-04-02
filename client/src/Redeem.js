@@ -46,6 +46,8 @@ function Redeem({ onClose }) {
         console.log("Redeem button clicked for:", reward.title); // Debugging
         setSelectedReward(reward);
         setShowPopup(true);
+
+        console.log("confirmRedeem function:", confirmRedeem); // Check
     };
 
     const confirmRedeem = () => {
