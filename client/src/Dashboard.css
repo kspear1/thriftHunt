@@ -190,7 +190,7 @@ body {
 
 /* Thrift Tip */
 .thrift-tip {
-    background: rgba(255, 255, 255, 0.742);
+    background: rgb(255, 255, 255);
     border-radius: 10px;
     padding: 20px;
     margin-top: 30px;
