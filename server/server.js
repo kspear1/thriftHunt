@@ -129,7 +129,7 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
         const { data: publicUrlData } = supabase.storage.from('challenge-images').getPublicUrl(fileName);
         const imageUrl = publicUrlData.publicUrl;
 
-        // Store image URL in database (optional)
+        // Store image URL in database
         const { error: dbError } = await supabase
             .from('challenge_submissions')
             .insert([{ user_id: userId, challenge_id: challengeId, image_url: imageUrl, status: 'pending' }]);
