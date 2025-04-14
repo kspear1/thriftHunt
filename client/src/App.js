@@ -67,11 +67,11 @@ function App() {
             console.log("Login API response:", response);
             
             if (response.data.success) {
-                // NEW: Store user name from response if available
-                setName(response.data.name || 'Thrifter'); // Use name from response or default to 'User'
+                localStorage.setItem('userId', response.data.user.id); // Store userId
+                setName(response.data.name || 'Thrifter');
                 setMessage('Login successful!');
-                // Skip verification for login and go straight to dashboard
-                setIsVerified(true); 
+                setIsVerified(true);
+            
             } else {
                 setMessage(response.data.message || 'Login failed. Please check your credentials.');
             }
@@ -105,6 +105,7 @@ function App() {
         setVerificationCode('');
         setIsEmailSent(false);
         setIsVerified(false);
+        localStorage.removeItem('userId');
     };
 
     // NEW: Function to toggle between register and login modes

@@ -27,29 +27,57 @@ function Challenges({ onClose }) {
     };
 
     // Handle image file change and generate preview
-    const handleImageChange = (event, challenge) => {
+    const handleImageChange = async (event, challenge) => {
         const file = event.target.files[0];
-        if (file && !completedChallenges.has(challenge.id)) {
-            const previewUrl = URL.createObjectURL(file);
-            setImagePreviews(prev => ({ ...prev, [challenge.id]: previewUrl }));
-            
-            setEarnedPoints(prevPoints => {
-                const updatedPoints = prevPoints + challenge.points;
-                
-                // Save the updated points to localStorage
-                localStorage.setItem('earnedPoints', updatedPoints);
-
-                // Save the completed challenges to localStorage
-                setCompletedChallenges(prev => {
-                    const updatedChallenges = new Set(prev).add(challenge.id);
-                    localStorage.setItem('completedChallenges', JSON.stringify(Array.from(updatedChallenges)));
-                    return updatedChallenges;
-                });
-
-                return updatedPoints;
+        if (!file || completedChallenges.has(challenge.id)) return;
+    
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('challengeId', challenge.id);
+    
+        // Assuming you're storing the userId in localStorage after login
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            alert('You must be logged in to upload.');
+            return;
+        }
+    
+        formData.append('userId', userId);
+    
+        try {
+            const response = await fetch('/upload-challenge-image', {
+                method: 'POST',
+                body: formData
             });
+    
+            const result = await response.json();
+            if (result.success) {
+                const previewUrl = URL.createObjectURL(file);
+                setImagePreviews(prev => ({ ...prev, [challenge.id]: previewUrl }));
+    
+                setEarnedPoints(prevPoints => {
+                    const updatedPoints = prevPoints + challenge.points;
+                    localStorage.setItem('earnedPoints', updatedPoints);
+    
+                    setCompletedChallenges(prev => {
+                        const updated = new Set(prev).add(challenge.id);
+                        localStorage.setItem('completedChallenges', JSON.stringify(Array.from(updated)));
+                        return updated;
+                    });
+    
+                    return updatedPoints;
+                });
+    
+                alert('Image uploaded successfully!');
+            } else {
+                alert(result.message || 'Upload failed.');
+            }
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert('An error occurred during upload.');
         }
     };
+    
 
     useEffect(() => {
         const newChallenges = getRandomChallenges();
