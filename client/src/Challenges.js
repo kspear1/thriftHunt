@@ -52,21 +52,7 @@ function Challenges({ onClose }) {
     
             const result = await response.json();
             if (result.success) {
-                const previewUrl = URL.createObjectURL(file);
-                setImagePreviews(prev => ({ ...prev, [challenge.id]: previewUrl }));
-    
-                setEarnedPoints(prevPoints => {
-                    const updatedPoints = prevPoints + challenge.points;
-                    localStorage.setItem('earnedPoints', updatedPoints);
-    
-                    setCompletedChallenges(prev => {
-                        const updated = new Set(prev).add(challenge.id);
-                        localStorage.setItem('completedChallenges', JSON.stringify(Array.from(updated)));
-                        return updated;
-                    });
-    
-                    return updatedPoints;
-                });
+                setEarnedPoints(prev => prev + challenge.points);
     
                 alert('Image uploaded successfully!');
             } else {
@@ -82,21 +68,18 @@ function Challenges({ onClose }) {
     useEffect(() => {
         const newChallenges = getRandomChallenges();
         setChallenges(newChallenges);
-        /*document.body.classList.add("challenges-body");*/
     
-        // Load points from localStorage
-        const savedPoints = localStorage.getItem('earnedPoints');
-        if (savedPoints) {
-            setEarnedPoints(parseInt(savedPoints, 10));
-        }
-
+        setCompletedChallenges(new Set()); // Reset on refresh
     
-        // Reset completed challenges when new challenges are selected
-        setCompletedChallenges(new Set());
+        const userId = localStorage.getItem('userId');
+        if (!userId) return;
     
-        /*return () => {
-            document.body.classList.remove("challenges-body"); // Cleanup on exit
-        };*/
+        // ✅ FETCH total points from Supabase
+        fetch(`/get-user-points?userId=${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) setEarnedPoints(data.totalPoints);
+            });
     }, []);
 
     if (showRedeem) {

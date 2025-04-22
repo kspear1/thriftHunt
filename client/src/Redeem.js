@@ -51,19 +51,23 @@ function Redeem({ onClose }) {
         console.log("confirmRedeem function:", confirmRedeem); // Check
     };
 
-    const confirmRedeem = () => {
-        const updatedPoints = earnedPoints - selectedReward.points;
+    const confirmRedeem = async () => {
+        const userId = localStorage.getItem('userId');
+        const response = await fetch('/redeem-reward', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, rewardId: selectedReward.id, cost: selectedReward.points })
+        });
     
-        // 💾 Update localStorage FIRST
-        localStorage.setItem('earnedPoints', updatedPoints);
+        const result = await response.json();
     
-        // 🔄 THEN update state so UI changes immediately
-        setEarnedPoints(updatedPoints);
-    
-        // Close popup
-        setShowPopup(false);
-    
-        alert(`You have successfully redeemed: ${selectedReward.title}`);
+        if (result.success) {
+            setEarnedPoints(prev => prev - selectedReward.points);
+            setShowPopup(false);
+            alert(`You have successfully redeemed: ${selectedReward.title}`);
+        } else {
+            alert(result.message || 'Redemption failed.');
+        }
     };
 
     return (

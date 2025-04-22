@@ -144,25 +144,85 @@ app.post('/upload-challenge-image', upload.single('image'), async (req, res) => 
 });
 
 app.post('/review-challenge-submission', async (req, res) => {
-    const { submissionId, status } = req.body; // "approved" or "rejected"
+    const { submissionId, status } = req.body;
 
     if (!submissionId || !['approved', 'rejected'].includes(status)) {
         return res.status(400).json({ success: false, message: 'Invalid request' });
     }
 
     try {
-        const { error } = await supabase
+        // Fetch submission data
+        const { data: submission, error: fetchError } = await supabase
+            .from('challenge_submissions')
+            .select('user_id, challenge_id')
+            .eq('id', submissionId)
+            .single();
+
+        if (fetchError) throw fetchError;
+
+        const challengePoints = getPointsForChallenge(submission.challenge_id); // <-- Replace this with your logic
+        const userId = submission.user_id;
+
+        // Update submission status
+        const { error: updateError } = await supabase
             .from('challenge_submissions')
             .update({ status })
             .eq('id', submissionId);
 
-        if (error) throw error;
+        if (updateError) throw updateError;
+
+        // If approved, update user points
+        if (status === 'approved') {
+            const { error: pointsError } = await supabase.rpc('increment_user_points', {
+                user_id_input: userId,
+                points_to_add: challengePoints
+            });
+            if (pointsError) throw pointsError;
+        }
 
         res.json({ success: true, message: `Submission ${status} successfully` });
     } catch (error) {
         console.error('Review error:', error);
         res.status(500).json({ success: false, message: 'Review failed', error: error.message });
     }
+});
+
+app.get('/get-user-points', async (req, res) => {
+    const { userId } = req.query;
+    const { data, error } = await supabase
+        .from('profiles')
+        .select('total_points')
+        .eq('id', userId)
+        .single();
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, totalPoints: data.total_points });
+});
+
+// ✅ Redeem a reward (deduct points)
+app.post('/redeem-reward', async (req, res) => {
+    const { userId, cost } = req.body;
+    const { data, error: fetchError } = await supabase
+        .from('profiles')
+        .select('total_points')
+        .eq('id', userId)
+        .single();
+
+    if (fetchError || !data) {
+        return res.status(400).json({ success: false, message: 'User not found.' });
+    }
+
+    if (data.total_points < cost) {
+        return res.status(400).json({ success: false, message: 'Not enough points.' });
+    }
+
+    const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ total_points: data.total_points - cost })
+        .eq('id', userId);
+
+    if (updateError) return res.status(500).json({ success: false, message: updateError.message });
+    res.json({ success: true });
 });
 
 // Fallback route to serve React frontend for any unmatched routes

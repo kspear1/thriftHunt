@@ -59,3 +59,29 @@ using (
   and bucket_id = 'challenge-images'
 );
 
+-- Created Profile table
+create table if not exists profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  name text,
+  total_points integer default 0
+);
+
+-- Triggers to add a new user after every signup to profiles
+create or replace function handle_new_user()
+returns trigger as $$
+begin
+  insert into profiles (id, name)
+  values (new.id, new.raw_user_meta_data->>'name');
+  return new;
+end;
+$$ language plpgsql;
+
+drop trigger if exists on_auth_user_created on auth.users;
+
+create trigger on_auth_user_created
+after insert on auth.users
+for each row
+execute procedure handle_new_user();
+
+
+
