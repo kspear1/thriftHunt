@@ -43,6 +43,22 @@ app.post('/register', async (req, res) => {
 
         if (error) throw error;
 
+        // After successful registration, create a profile for the user
+        const userId = data.user.id;
+
+        // Insert the user into the 'profiles' table
+        const { error: profileError } = await supabase
+            .from('profiles')
+            .insert([
+                {
+                    id: userId,
+                    name: name || 'Unknown', // If no name, default to 'Unknown'
+                    total_points: 0
+                }
+            ]);
+
+        if (profileError) throw profileError;
+
         res.json({ success: true, message: 'Registration successful. Check your email for verification.' });
     } catch (error) {
         console.error('Registration error:', error);
