@@ -18,6 +18,17 @@ const upload = multer({ storage });
 // Serve static files from React build folder
 app.use(express.static(path.join(__dirname, '../client/build')));
 
+const getPointsForChallenge = (challengeId) => {
+    const challengePointsMap = {
+        "1": 10,
+        "2": 20,
+        "3": 15,
+        "4": 25,
+        "5": 30,
+    };
+    return challengePointsMap[challengeId] || 0;
+};
+
 // ========================================================
 // Authentication Routes using Supabase Auth
 // ========================================================
@@ -168,14 +179,18 @@ app.post('/review-challenge-submission', async (req, res) => {
 
     try {
         // Fetch submission data
-        const { data: submission, error: fetchError } = await supabase
-            .from('challenge_submissions')
-            .select('user_id, challenge_id')
-            .eq('id', submissionId)
-            .single();
+        const { data: submissionData, error: fetchError } = await supabase
+        .from('challenge_submissions')
+        .select('user_id, challenge_id')
+        .eq('id', submissionId);
 
-        if (fetchError) throw fetchError;
+        console.log('Fetched submissionData:', submissionData);
 
+        if (fetchError || !submissionData || submissionData.length === 0) {
+            throw new Error('Could not find submission with that ID');
+        }
+
+        const submission = submissionData[0];
         const challengePoints = getPointsForChallenge(submission.challenge_id); // <-- Replace this with your logic
         const userId = submission.user_id;
 
@@ -240,6 +255,56 @@ app.post('/redeem-reward', async (req, res) => {
     if (updateError) return res.status(500).json({ success: false, message: updateError.message });
     res.json({ success: true });
 });
+
+app.get('/get-approved-points', async (req, res) => {
+    const { userId } = req.query;
+
+    try {
+        // Get all approved submissions for this user
+        const { data: submissions, error } = await supabase
+            .from('challenge_submissions')
+            .select('challenge_id')
+            .eq('user_id', userId)
+            .eq('status', 'approved');
+
+        if (error) throw error;
+
+        // Define point values
+        const challengePoints = {
+            "1": 10,
+            "2": 20,
+            "3": 15,
+            "4": 25,
+            "5": 30
+        };
+
+        // Calculate total points from approved challenges
+        const totalPoints = submissions.reduce((sum, sub) => {
+            return sum + (challengePoints[sub.challenge_id] || 0);
+        }, 0);
+
+        res.json({ success: true, totalPoints });
+    } catch (err) {
+        console.error('Error fetching approved points:', err.message);
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
+app.get('/get-approved-submissions', async (req, res) => {
+    const { challengeId } = req.query;
+
+    const { data, error } = await supabase
+        .from('challenge_submissions')
+        .select('user_id, image_url')
+        .eq('challenge_id', challengeId)
+        .eq('status', 'approved');
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    res.json({ success: true, submissions: data });
+});
+
+
 
 // Fallback route to serve React frontend for any unmatched routes
 app.get('*', (req, res) => {

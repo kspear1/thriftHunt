@@ -52,9 +52,7 @@ function Challenges({ onClose }) {
     
             const result = await response.json();
             if (result.success) {
-                setEarnedPoints(prev => prev + challenge.points);
-    
-                alert('Image uploaded successfully!');
+                alert('Image uploaded! Awaiting approval to earn points.');
             } else {
                 alert(result.message || 'Upload failed.');
             }
@@ -62,6 +60,15 @@ function Challenges({ onClose }) {
             console.error('Upload error:', error);
             alert('An error occurred during upload.');
         }
+    };
+
+    const refreshPoints = () => {
+        const userId = localStorage.getItem('userId');
+        fetch(`/get-approved-points?userId=${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) setEarnedPoints(data.totalPoints);
+            });
     };
     
 
@@ -74,12 +81,18 @@ function Challenges({ onClose }) {
         const userId = localStorage.getItem('userId');
         if (!userId) return;
     
-        // ✅ FETCH total points from Supabase
+        // FETCH total points from Supabase
         fetch(`/get-user-points?userId=${userId}`)
             .then(res => res.json())
             .then(data => {
                 if (data.success) setEarnedPoints(data.totalPoints);
             });
+        
+        fetch(`/get-approved-points?userId=${userId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) setEarnedPoints(data.totalPoints);
+        });
     }, []);
 
     if (showRedeem) {
@@ -94,6 +107,7 @@ function Challenges({ onClose }) {
             <button className="challenges-btn" onClick={() => setShowRedeem(true)}>
                 Redeem!      
             </button>
+            <button className="challenges-btn" onClick={refreshPoints}>Refresh Points</button>
             <div className="challenges-container">
                 {challenges.map((challenge, index) => (
                     <div key={index} className="challenge-box">
@@ -116,7 +130,15 @@ function Challenges({ onClose }) {
                             <label htmlFor={`file-upload-${challenge.id}`} className="upload-button">
                                 Upload Photo
                             </label>
-                            
+                            <button
+                            className="view-submissions-btn"
+                            onClick={() => {
+                                localStorage.setItem('selectedChallenge', challenge.id);
+                                window.location.href = '/images';
+                            }}
+                            >
+                            See Challenge Submissions
+                            </button>
                             {/* Image Preview */}
                             {imagePreviews[challenge.id] && (
                                 <div className="image-preview">

@@ -83,5 +83,22 @@ after insert on auth.users
 for each row
 execute procedure handle_new_user();
 
+-- function to increment points
+create or replace function increment_user_points(user_id_input uuid, points_to_add int)
+returns void as $$
+begin
+  update profiles
+  set total_points = total_points + points_to_add
+  where id = user_id_input;
+end;
+$$ language plpgsql;
+
+-- Allow service role to access any row
+create policy "Service role can read all submissions"
+on challenge_submissions
+for select
+to service_role
+using (true);
+
 
 
