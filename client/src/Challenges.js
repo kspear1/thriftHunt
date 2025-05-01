@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './challenges.css';
 import Redeem from './Redeem';
+import Images from './Images';
 
 
 function Challenges({ onClose }) {
@@ -9,6 +10,7 @@ function Challenges({ onClose }) {
     const [earnedPoints, setEarnedPoints] = useState(0); // Total points
     const [completedChallenges, setCompletedChallenges] = useState(new Set()); // Track completed challenges
     const [showRedeem, setShowRedeem] = useState(false);
+    const [selectedChallengeId, setSelectedChallengeId] = useState(null);
 
 
     // Sample challenges data - you can replace this with dynamic data from an API if needed
@@ -99,6 +101,13 @@ function Challenges({ onClose }) {
         return <Redeem onClose={() => setShowRedeem(false)} />;
     }
 
+    if (selectedChallengeId) {
+        return <Images 
+            challengeId={selectedChallengeId}
+            onBack={() => setSelectedChallengeId(null)} 
+        />;
+    }
+
     return (
         <div className="challenges-page">
             <h1>Thrift Challenges</h1>
@@ -131,12 +140,7 @@ function Challenges({ onClose }) {
                                 Upload Photo
                             </label>
                             <button
-                            className="view-submissions-btn"
-                            onClick={() => {
-                                localStorage.setItem('selectedChallenge', challenge.id);
-                                window.location.href = '/images';
-                            }}
-                            >
+                            className="view-submissions-btn" onClick={() => setSelectedChallengeId(challenge.id)}>
                             See Challenge Submissions
                             </button>
                             {/* Image Preview */}

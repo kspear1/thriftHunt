@@ -1,9 +1,18 @@
 // Images.js
 import React, { useEffect, useState } from 'react';
-import './images.css';
+import './Images.css';
 
 function Images({ challengeId, onBack }) {
     const [submissions, setSubmissions] = useState([]);
+
+    useEffect(() => {
+        // Apply override class to <body>
+        document.body.classList.add('images-active');
+        return () => {
+          // Clean up on unmount
+          document.body.classList.remove('images-active');
+        };
+      }, []);
 
     useEffect(() => {
         fetch(`/get-approved-submissions?challengeId=${challengeId}`)
