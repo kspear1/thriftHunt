@@ -232,28 +232,28 @@ app.get('/get-user-points', async (req, res) => {
 
 // ✅ Redeem a reward (deduct points)
 app.post('/redeem-reward', async (req, res) => {
-    const { userId, cost } = req.body;
-    const { data, error: fetchError } = await supabase
-        .from('profiles')
-        .select('total_points')
-        .eq('id', userId)
-        .single();
+  const { userId, rewardId, cost } = req.body;
 
-    if (fetchError || !data) {
-        return res.status(400).json({ success: false, message: 'User not found.' });
-    }
+  try {
+    // Deduct points
+    const { error: pointsError } = await supabase.rpc('increment_user_points', {
+      user_id_input: userId,
+      points_to_add: -cost
+    });
 
-    if (data.total_points < cost) {
-        return res.status(400).json({ success: false, message: 'Not enough points.' });
-    }
+    if (pointsError) throw pointsError;
 
-    const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ total_points: data.total_points - cost })
-        .eq('id', userId);
+    // Record the redemption
+    const { error: insertError } = await supabase
+      .from('redemptions')
+      .insert([{ user_id: userId, reward_id: rewardId }]);
 
-    if (updateError) return res.status(500).json({ success: false, message: updateError.message });
+    if (insertError) throw insertError;
+
     res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 app.get('/get-approved-points', async (req, res) => {
@@ -303,6 +303,26 @@ app.get('/get-approved-submissions', async (req, res) => {
 
     res.json({ success: true, submissions: data });
 });
+
+app.get('/get-challenge-status', async (req, res) => {
+    const { userId, challengeId } = req.query;
+  
+    const { data, error } = await supabase
+      .from('challenge_submissions')
+      .select('status')
+      .eq('user_id', userId)
+      .eq('challenge_id', challengeId)
+      .order('created_at', { ascending: false }) // just in case multiple
+      .limit(1)
+      .single();
+  
+    if (error || !data) {
+      return res.json({ success: true, status: null }); // no submission yet
+    }
+  
+    res.json({ success: true, status: data.status });
+  });
+  
 
 
 

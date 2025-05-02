@@ -11,6 +11,14 @@ function Challenges({ onClose }) {
     const [completedChallenges, setCompletedChallenges] = useState(new Set()); // Track completed challenges
     const [showRedeem, setShowRedeem] = useState(false);
     const [selectedChallengeId, setSelectedChallengeId] = useState(null);
+    const [challengeStatuses, setChallengeStatuses] = useState({});
+    const statusMessages = {
+        approved: '✅ Your submission was approved! Great job.',
+        pending: '⏳ Your submission is pending review.',
+        rejected: '❌ Your submission was not approved. Feel free to try again!',
+        none: '🚫 You haven’t submitted anything yet for this challenge.'
+      };
+
 
 
     // Sample challenges data - you can replace this with dynamic data from an API if needed
@@ -66,7 +74,7 @@ function Challenges({ onClose }) {
 
     const refreshPoints = () => {
         const userId = localStorage.getItem('userId');
-        fetch(`/get-approved-points?userId=${userId}`)
+        fetch(`/get-user-points?userId=${userId}`)
             .then(res => res.json())
             .then(data => {
                 if (data.success) setEarnedPoints(data.totalPoints);
@@ -90,12 +98,25 @@ function Challenges({ onClose }) {
                 if (data.success) setEarnedPoints(data.totalPoints);
             });
         
-        fetch(`/get-approved-points?userId=${userId}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) setEarnedPoints(data.totalPoints);
-        });
+            // Fetch status for each challenge
+            newChallenges.forEach(challenge => {
+                fetch(`/get-challenge-status?userId=${userId}&challengeId=${challenge.id}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                    setChallengeStatuses(prev => ({
+                        ...prev,
+                        [challenge.id]: data.status
+                    }));
+                    }
+                });
+            });
     }, []);
+
+    useEffect(() => {
+        document.body.classList.add('challenges-layout');
+        return () => document.body.classList.remove('challenges-layout');
+      }, []);
 
     if (showRedeem) {
         return <Redeem onClose={() => setShowRedeem(false)} />;
@@ -120,6 +141,14 @@ function Challenges({ onClose }) {
             <div className="challenges-container">
                 {challenges.map((challenge, index) => (
                     <div key={index} className="challenge-box">
+                        {(() => {
+                        const status = challengeStatuses[challenge.id] || 'none';
+                        return (
+                            <div className={`submission-status ${status}`}>
+                            {statusMessages[status]}
+                            </div>
+                        );
+                        })()}
                         <h2>{challenge.title}</h2>
                         <p>{challenge.description}</p>
                         <div className="points">Points: {challenge.points}</div>

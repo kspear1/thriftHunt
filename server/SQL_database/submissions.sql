@@ -100,5 +100,25 @@ for select
 to service_role
 using (true);
 
+-- creates table to hold item redemptions
+create table if not exists redemptions (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users(id),
+  reward_id text,
+  redeemed_at timestamp default now()
+);
+
+-- adds a check constrinet for challenge_submissions
+alter table challenge_submissions
+add constraint status_check
+check (status in ('approved', 'pending', 'rejected'));
+
+-- Allow users to view their own submissions (all statuses)
+create policy "Users can view their own submissions"
+on challenge_submissions
+for select
+to authenticated
+using (auth.uid() = user_id);
+
 
 

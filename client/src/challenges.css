@@ -15,6 +15,29 @@
 }
 */
 
+.challenges-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;           /* Full width */
+    height: 100vh;          /* Full height */
+    background: rgba(0, 0, 0, 0.85); /* Translucent black */
+    color: white;
+    padding: 40px;
+    box-sizing: border-box;
+    overflow-y: auto;       /* Scroll if content overflows */
+    z-index: 1000;          /* Stay on top */
+  }
+
+body.challenges-layout .App {
+    width: 100% !important;
+    max-width: none !important;
+    border-radius: 0;
+    background: none;
+    padding: 40px 60px;
+    box-shadow: none;
+}
+
 h1 {
     font-size: 6rem;
     margin-bottom: 20px;
@@ -22,12 +45,14 @@ h1 {
 }
 
 .challenges-container {
+    margin-top: 40px;
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
-}
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    align-items: stretch;
+  }
 
 .divider {
     width: 100%; /* Make the line span the entire width */
@@ -38,14 +63,21 @@ h1 {
 }
 
 .challenge-box {
-    background-color: rgba(255, 255, 255, 0.899); /* White background for card */
-    padding: 20px;
-    width: 300px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px #f06292;
-    text-align: center;
-    border: 1px solid #ddd;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  width: 30%;
+  min-width: 280px;
+  max-width: 400px;
+  flex: 1 1 30%;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px #f06292;
+  text-align: center;
+  border: 1px solid #ddd;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 500px;
 }
 
 .challenge-box:hover {
@@ -171,4 +203,40 @@ h1 {
 .points-display .total {
     font-size: 1.2rem; /* Smaller font for the points number */
     font-weight: normal; /* Normal weight for the points */
+}
+
+.submission-status {
+  margin-top: auto;
+  padding: 10px 16px;
+  border-radius: 30px;
+  font-weight: 600;
+  width: fit-content;
+  font-size: 0.95rem;
+  margin-left: auto;
+  margin-right: auto;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+/* Use soft transparent versions of your pinks & tones */
+.submission-status.approved {
+  background-color: rgba(240, 250, 240, 0.9);
+  color: #2e7d32;
+}
+
+.submission-status.pending {
+  background-color: rgba(255, 248, 225, 0.95);
+  color: #a85c00;
+}
+
+.submission-status.rejected {
+  background-color: rgba(255, 235, 238, 0.95);
+  color: #c62828;
+}
+
+.submission-status.none {
+  background-color: rgba(245, 245, 245, 0.95);
+  color: #555;
 }

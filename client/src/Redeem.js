@@ -26,13 +26,19 @@ function Redeem({ onClose }) {
     useEffect(() => {
         setRewards(getRandomRewards());
         document.body.classList.add("challenges-body");
-
-        // Load saved points from localStorage
-        const savedPoints = localStorage.getItem('earnedPoints');
-        if (savedPoints) {
-            setEarnedPoints(parseInt(savedPoints, 10));
-        }
-
+    
+        const userId = localStorage.getItem('userId');
+        if (!userId) return;
+    
+        //Fetch total points from Supabase
+        fetch(`/get-user-points?userId=${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    setEarnedPoints(data.totalPoints);
+                }
+            });
+    
         return () => {
             document.body.classList.remove("challenges-body");
         };
@@ -62,9 +68,18 @@ function Redeem({ onClose }) {
         const result = await response.json();
     
         if (result.success) {
-            setEarnedPoints(prev => prev - selectedReward.points);
             setShowPopup(false);
             alert(`You have successfully redeemed: ${selectedReward.title}`);
+        
+            //Fetch updated points
+            const userId = localStorage.getItem('userId');
+            fetch(`/get-user-points?userId=${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        setEarnedPoints(data.totalPoints);
+                    }
+                });
         } else {
             alert(result.message || 'Redemption failed.');
         }
