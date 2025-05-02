@@ -13,8 +13,8 @@ function Challenges({ onClose }) {
     const [selectedChallengeId, setSelectedChallengeId] = useState(null);
     const [challengeStatuses, setChallengeStatuses] = useState({});
     const statusMessages = {
-        approved: '✅ Your submission was approved! Great job.',
-        pending: '⏳ Your submission is pending review.',
+        approved: '✅ Your submission was approved! Fabulous job!',
+        pending: '⏳ Your submission is pending review. Hold Tight!',
         rejected: '❌ Your submission was not approved. Feel free to try again!',
         none: '🚫 You haven’t submitted anything yet for this challenge.'
       };
@@ -142,9 +142,10 @@ function Challenges({ onClose }) {
                 {challenges.map((challenge, index) => (
                     <div key={index} className="challenge-box">
                         {(() => {
-                        const status = challengeStatuses[challenge.id] || 'none';
+                        const rawStatus = challengeStatuses[challenge.id];
+                        const status = typeof rawStatus === 'string' ? rawStatus : 'none';
                         return (
-                            <div className={`submission-status ${status}`}>
+                            <div className={`challenge-status-header ${status}`}>
                             {statusMessages[status]}
                             </div>
                         );
