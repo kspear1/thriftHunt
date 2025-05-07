@@ -120,5 +120,12 @@ for select
 to authenticated
 using (auth.uid() = user_id);
 
+-- allows deletions
+create policy "Service role can delete all submissions"
+on challenge_submissions
+for delete
+to service_role
+using (true);
+
 
 

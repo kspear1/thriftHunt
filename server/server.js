@@ -322,6 +322,40 @@ app.get('/get-challenge-status', async (req, res) => {
   
     res.json({ success: true, status: data.status });
   });
+
+  app.post('/clear-expired-submissions', async (req, res) => {
+    try {
+      // Fetch how many rows exist before deletion
+      const { data: existingRows, error: selectError } = await supabase
+        .from('challenge_submissions')
+        .select('challenge_id');
+  
+      if (selectError) throw selectError;
+  
+      console.log(`Found ${existingRows.length} rows to delete`);
+  
+      const { error: deleteError } = await supabase
+        .from('challenge_submissions')
+        .delete()
+        .not('challenge_id', 'is', null); // Matches all rows
+  
+      if (deleteError) throw deleteError;
+  
+      res.json({
+        success: true,
+        message: `Deleted ${existingRows.length} submissions.`,
+      });
+    } catch (err) {
+      console.error("Delete error:", err.message);
+      res.status(500).json({ success: false, message: err.message });
+    }
+
+    const { data: testData } = await supabase
+    .from('challenge_submissions')
+    .select('*');
+    console.log("Actual data before delete:", testData);
+
+  });
   
 
 

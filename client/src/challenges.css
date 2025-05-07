@@ -62,8 +62,17 @@ h1 {
     margin: 20px 0; /* Add space above and below the line */
 }
 
+.time-left {
+    text-align: center;
+    font-size: 1rem;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    color: white;
+    font-weight: bold;
+  }
+
 .challenge-box {
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.830);
   width: 30%;
   min-width: 280px;
   max-width: 400px;
@@ -161,6 +170,13 @@ h1 {
     width: 80%;
 }
 
+.upload-button.disabled {
+    background-color: #767575;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
 .upload-button:hover {
     background-color: #f50057; /* Slightly darker pink */
 }
@@ -246,6 +262,85 @@ h1 {
   button.view-submissions-btn:hover {
     background: #f50057;
   }
+
+  .corner-button-wrapper {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* space between buttons */
+    z-index: 9999; /* stay above everything */
+  }
+  
+  .top-btn {
+    background: linear-gradient(135deg, #ff4081, #f50057);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: auto;
+  }
+
+  .image-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+  
+  .image-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 90%;
+    max-height: 90%;
+    text-align: center;
+  }
+  
+  .image-modal-content img {
+    max-width: 100%;
+    max-height: 60vh;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .image-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .confirm-btn,
+  .cancel-btn {
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .confirm-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .cancel-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
 
   
   

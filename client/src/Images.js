@@ -1,8 +1,9 @@
 // Images.js
 import React, { useEffect, useState } from 'react';
 import './Images.css';
+import './challenges.css'
 
-function Images({ challengeId, onBack }) {
+function Images({ challenge, onBack }) {
     const [submissions, setSubmissions] = useState([]);
 
     useEffect(() => {
@@ -15,22 +16,22 @@ function Images({ challengeId, onBack }) {
       }, []);
 
     useEffect(() => {
-        fetch(`/get-approved-submissions?challengeId=${challengeId}`)
+        fetch(`/get-approved-submissions?challengeId=${challenge.id}`)
             .then(res => res.json())
             .then(data => {
                 if (data.success) setSubmissions(data.submissions);
             });
-    }, [challengeId]);
+    }, [challenge]);
 
     return (
         <div className="images-page">
-            <button className="back-btn" onClick={onBack}>⬅ Back to Challenges</button>
-            <h1>Approved Submissions</h1>
+            <button className="logout-btn" onClick={onBack}>⬅ Back to Challenges</button>
+            <h1 className="challenge-title">{challenge?.title || "Challenge Submissions"}</h1>
+            <hr className="image-divider" />
             <div className="image-grid">
                 {submissions.map((submission, index) => (
                     <div key={index} className="image-card">
                         <img src={submission.image_url} alt={`submission ${index}`} />
-                        <p>User: {submission.user_id.slice(0, 8)}...</p>
                     </div>
                 ))}
             </div>

@@ -53,6 +53,7 @@
   .image-card p {
     margin-top: 10px;
     font-size: 14px;
+    font-style: italic;
     color: #ccc;
   }
 
@@ -61,4 +62,19 @@
     display: block !important;
     align-items: unset !important;
     justify-content: unset !important;
+  }
+
+  .challenge-title {
+    text-align: left;
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 10px;
+  }
+  
+  .image-divider {
+    width: 100%;
+    height: 2px;
+    background-color: #f06292;
+    border: none;
+    margin-bottom: 20px;
   }

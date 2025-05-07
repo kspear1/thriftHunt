@@ -3,6 +3,7 @@ import axios from 'axios';
 import Dashboard from './Dashboard';
 import './App.css';
 
+
 function App() {
     // ==========================================
     // STATE MANAGEMENT
@@ -244,7 +245,7 @@ function App() {
             )}
             
             {/* Message display remains the same */}
-            {message && <p className="message">{message}</p>}
+            {!isVerified && message && <p className="message">{message}</p>}
         </div>
     );
 }

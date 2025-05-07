@@ -48,12 +48,16 @@
 }
 
 .reward-image {
-    width: 100%; /* Make the image fit the container width */
-    max-width: 250px; /* Set a reasonable max width */
-    height: 150px; /* Limit the height to fit inside the box */
-    object-fit: contain; /* Ensures the image is fully visible */
-    border-radius: 8px; /* Optional: rounded corners */
-}
+    width: 100%;
+    max-width: 300px;       /* increase from 250px */
+    height: auto;
+    max-height: 200px;      /* increase from 150px */
+    object-fit: cover;
+    border-radius: 12px;    /* add more rounding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* optional: soft shadow */
+    transition: transform 0.2s ease;
+  }
+  
 
 @keyframes fadeIn {
     from {
@@ -65,6 +69,20 @@
         transform: scale(1);
     }
 }
+
+.challenge-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.reward-description {
+    font-size: 0.95rem;
+    color: #444;
+    text-align: center;
+    margin: 10px 0;
+  }
 
 
 
